@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `miniblog`.`users` (
   `avatar` VARCHAR(99) NOT NULL,
   `gender` TINYINT(1) NOT NULL DEFAULT 0,
   `birthdate` DATETIME NOT NULL,
-  `address` VARCHAR(100) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `boss` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`))
