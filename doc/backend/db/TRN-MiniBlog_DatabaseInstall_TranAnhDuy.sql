@@ -88,6 +88,24 @@ CREATE TABLE IF NOT EXISTS `miniblog`.`comments` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `miniblog`.`tokens`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `miniblog`.`tokens` (
+  `access_token` VARCHAR(100) NOT NULL,
+  `create_at` DATETIME NOT NULL,
+  `expired` DATETIME NOT NULL,
+  `users_id` INT(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`users_id`, `access_token`),
+  INDEX `fk_tokens_users1_idx` (`users_id` ASC),
+  CONSTRAINT `fk_tokens_users1`
+    FOREIGN KEY (`users_id`)
+    REFERENCES `miniblog`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
