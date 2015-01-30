@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS `miniblog`.`posts` (
   `users_id` INT(11) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`, `users_id`),
   INDEX `fk_posts_users1_idx` (`users_id` ASC),
-  INDEX `idx_desc_posts` (`description`(1) ASC),
-  INDEX `idx_deact_posts` (`deactived` ASC),
+  INDEX `inx_desc_posts` (`description`(1) ASC),
+  INDEX `inx_deact_posts` (`deactived` ASC),
   CONSTRAINT `fk_posts_users1`
     FOREIGN KEY (`users_id`)
     REFERENCES `miniblog`.`users` (`id`)
