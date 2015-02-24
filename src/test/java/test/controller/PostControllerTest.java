@@ -29,7 +29,7 @@ public class PostControllerTest
     private PostController postCtrl;
     
     @Test
-    public void testCreatePostShouldFailBecauseAccessTokenDoNotExist() throws Exception
+    public void testCreatePostShouldFailBecauseAccessTokenNotExist() throws Exception
     {
         Response resp = postCtrl.createPost("123", "Phep Cong", "Mot cong mot bang hai?");
         assertEquals(503, resp.getStatus());
@@ -44,7 +44,7 @@ public class PostControllerTest
     }
     
     @Test
-    public void testGetAllPostsShouldFailBecauseAccessTokenDoNotExist() throws Exception
+    public void testGetAllPostsShouldFailBecauseAccessTokenNotExist() throws Exception
     {
         Response resp = postCtrl.getAllPosts("123");
         assertEquals(503, resp.getStatus());
@@ -58,7 +58,7 @@ public class PostControllerTest
     }
 
     @Test
-    public void testGetAllPostsByUserIdShouldFailBecauseAccessTokenDoNotExist() throws Exception
+    public void testGetAllPostsByUserIdShouldFailBecauseAccessTokenNotExist() throws Exception
     {
         Response resp = postCtrl.getAllPostsByUserId("123");
         assertEquals(503, resp.getStatus());
@@ -72,14 +72,14 @@ public class PostControllerTest
     }
 
     @Test
-    public void testUpdatePostShouldFailBecauseAccessTokenDoNotExist() throws Exception
+    public void testUpdatePostShouldFailBecauseAccessTokenNotExist() throws Exception
     {
         Response resp = postCtrl.updatePost("123", 11, "Đã Lâu Không Gặp", "Trịnh Thăng Bình");
         assertEquals(503, resp.getStatus());
     }
     
     @Test 
-    public void testUpdatePostShouldFailBecausePostIdDoNotExist() throws Exception
+    public void testUpdatePostShouldFailBecausePostIdNotExist() throws Exception
     {
         Response resp = postCtrl.updatePost("4df3fdf82633ed1069b47861c474292810d4339740fea142a26a7f1e69522b6c",
                 999999, "Đã Lâu Không Gặp", "Trịnh Thăng Bình");
@@ -95,14 +95,14 @@ public class PostControllerTest
     }
 
     @Test
-    public void testDeactivePostShouldFailBecauseAccessTokenDoNotExist() throws Exception
+    public void testDeactivePostShouldFailBecauseAccessTokenNotExist() throws Exception
     {
         Response resp = postCtrl.deactivePost("123", 10, 1);
         assertEquals(503, resp.getStatus());
     }
     
     @Test
-    public void testDeactivePostShouldFailBecausePostIdDoNotExist() throws Exception
+    public void testDeactivePostShouldFailBecausePostIdNotExist() throws Exception
     {
         Response resp = postCtrl.deactivePost("b5da24f91dc449b3fbf44966553d4f053a88fed21d67796e55e2eb135405b44f",
                 999999, 1);
@@ -118,14 +118,14 @@ public class PostControllerTest
     }
 
     @Test
-    public void testDeletePostShouldFailBecauseAccessTokenDoNotExist() throws Exception
+    public void testDeletePostShouldFailBecauseAccessTokenNotExist() throws Exception
     {
         Response resp = postCtrl.deletePost("123", 5);
         assertEquals(503, resp.getStatus());
     }
     
     @Test
-    public void testDeletePostShouldFailBecausePostIdDoNotExist() throws Exception
+    public void testDeletePostShouldFailBecausePostIdNotExist() throws Exception
     {
         Response resp = postCtrl.deletePost("fa34709de3ae6e7647fbbdf1d1bdade9892d78c0d70ff7aae9c0c732b3a868ed",
                 999999);

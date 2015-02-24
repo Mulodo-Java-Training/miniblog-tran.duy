@@ -1,7 +1,7 @@
 package duy.miniblog.dao.impl;
 
 
-import java.util.Collection;
+
 import java.util.List;
 
 import duy.miniblog.dao.UserDAO;

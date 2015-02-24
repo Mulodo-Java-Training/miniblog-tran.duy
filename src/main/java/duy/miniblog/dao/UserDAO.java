@@ -1,6 +1,5 @@
 package duy.miniblog.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import duy.miniblog.entity.User;

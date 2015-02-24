@@ -18,13 +18,13 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import duy.miniblog.dao.CommentDAO;
-import duy.miniblog.dao.PostDAO;
-import duy.miniblog.dao.TokenDAO;
-import duy.miniblog.dao.UserDAO;
 import duy.miniblog.entity.Comment;
 import duy.miniblog.entity.Post;
 import duy.miniblog.entity.User;
+import duy.miniblog.service.CommentService;
+import duy.miniblog.service.PostService;
+import duy.miniblog.service.TokenService;
+import duy.miniblog.service.UserService;
 import duy.miniblog.util.DateUtil;
 
 @Controller
@@ -34,16 +34,16 @@ public class CommentController
 {
     
     @Autowired
-    private TokenDAO tokenDao;
+    private UserService userService;
     
     @Autowired
-    private PostDAO postDao;
+    private TokenService tokenService;
     
     @Autowired
-    private UserDAO userDao;
+    private PostService postService;
     
     @Autowired
-    private CommentDAO cmDao;
+    private CommentService cmService;
     
     @POST
     @Path("posts/{postId}/comments")
@@ -51,9 +51,9 @@ public class CommentController
     public Response createComment(@HeaderParam("accessToken") String accessToken, @FormParam("title") String title, 
             @FormParam("description") String description, @PathParam("postId") Integer postId)
     {
-        if (tokenDao.checkToken(accessToken)){
-            User user = tokenDao.getToken(accessToken).getUser();
-            Post post = postDao.getPostById(postId);
+        if (tokenService.checkToken(accessToken)){
+            User user = tokenService.getToken(accessToken).getUser();
+            Post post = postService.getPostById(postId);
             if (post != null){
                 Comment comment = new Comment();
                 comment.setTitle(title);
@@ -62,7 +62,7 @@ public class CommentController
                 comment.setUpdated_at(DateUtil.createAt());
                 comment.setUser(user);
                 comment.setPost(post);
-                cmDao.createComment(comment);
+                cmService.createComment(comment);
                 return Response.status(201).entity("Create Comment Successful!").build();
             } else {
                 return Response.status(503).entity("Post Id doesn't exists!").build();
@@ -78,13 +78,13 @@ public class CommentController
     public Response updateComment(@HeaderParam("accessToken") String accessToken, @FormParam("title") String title, 
             @FormParam("description") String description, @PathParam("commentId") Integer commentId)
     {
-        if (tokenDao.checkToken(accessToken)){
-            Comment comment = cmDao.getCommentById(commentId);
+        if (tokenService.checkToken(accessToken)){
+            Comment comment = cmService.getCommentById(commentId);
             if (comment != null){
                 comment.setTitle(title);
                 comment.setDescription(description);
                 comment.setUpdated_at(DateUtil.createAt());
-                cmDao.updateComment(comment);
+                cmService.updateComment(comment);
                 return Response.status(200).entity("Update Successful!").build();
             } else {
                 return Response.status(503).entity("Error code 300x!").build();
@@ -98,10 +98,10 @@ public class CommentController
     @Path("posts/{postId}/comments/{commentId}")
     public Response deleteComment(@HeaderParam("accessToken") String accessToken, @PathParam("commentId") Integer commentId)
     {
-        if (tokenDao.checkToken(accessToken)){
-            Comment comment = cmDao.getCommentById(commentId);
+        if (tokenService.checkToken(accessToken)){
+            Comment comment = cmService.getCommentById(commentId);
             if (comment != null){
-                cmDao.deleteComment(comment);
+                cmService.deleteComment(comment);
                 return Response.status(200).entity("Delete Successful!").build();
             } else {
                 return Response.status(503).entity("Error code 300x!").build();
@@ -115,8 +115,8 @@ public class CommentController
     @Path("posts/{postId}/comments")
     public Response getAllCommentsByPostId(@HeaderParam("accessToken") String accessToken, @PathParam("postId") Integer postId)
     {
-        if (tokenDao.checkToken(accessToken)){
-            List<Comment> lst = cmDao.getCommentByPostId(postId);
+        if (tokenService.checkToken(accessToken)){
+            List<Comment> lst = cmService.getCommentByPostId(postId);
             if (lst != null){
                 return Response.status(200).entity(lst).build();
             } else {
@@ -131,9 +131,9 @@ public class CommentController
     @Path("users/comments")
     public Response getAllCommentsByUserId(@HeaderParam("accessToken") String accessToken)
     {
-        if (tokenDao.checkToken(accessToken)){
-            Integer userId = tokenDao.getToken(accessToken).getUser().getId();
-            List<Comment> lst = cmDao.getCommentByUserId(userId);
+        if (tokenService.checkToken(accessToken)){
+            Integer userId = tokenService.getToken(accessToken).getUser().getId();
+            List<Comment> lst = cmService.getCommentByUserId(userId);
             if (lst != null){
                 return Response.status(200).entity(lst).build();
             } else {

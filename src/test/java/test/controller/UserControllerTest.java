@@ -78,14 +78,14 @@ public class UserControllerTest
     
     
     @Test
-    public void logoutShouldReturnErrorWhenAccessTokenDoNotExist() throws Exception
+    public void logoutShouldReturnErrorWhenAccessTokenNotExist() throws Exception
     {
         Response resp = userCtrl.logout("123321212");
         assertEquals(503, resp.getStatus());
     }
     
     @Test
-    public void getUserInfoShouldFailWhenAccessTokenDoNotExist() throws Exception
+    public void getUserInfoShouldFailWhenAccessTokenNotExist() throws Exception
     {
         Response resp = userCtrl.getUserInfo("123");
         assertEquals(503, resp.getStatus());
@@ -99,7 +99,7 @@ public class UserControllerTest
     }
     
     @Test 
-    public void updateUserInfoShouldFailWhenAccessTokenDoNotExist() throws Exception
+    public void updateUserInfoShouldFailWhenAccessTokenNotExist() throws Exception
     {
         Response resp = userCtrl.updateUserInfo("123", "john", "smith", "john.jpg", 1, "johmsmith@gmail.com");
         assertEquals(500, resp.getStatus());
@@ -113,21 +113,21 @@ public class UserControllerTest
     }
     
     @Test
-    public void changePasswordShouldFailWhenAccessTokenDoNotExist() throws Exception
+    public void changePasswordShouldFailWhenAccessTokenNotExist() throws Exception
     {
         Response resp = userCtrl.changePassword("123", "111", "192", "192");
         assertEquals(503, resp.getStatus());
     }
     
     @Test
-    public void changePasswordShouldFailBecauseOldPasswordDoNotMatch() throws Exception
+    public void changePasswordShouldFailBecauseOldPasswordNotMatch() throws Exception
     {
         Response resp = userCtrl.changePassword("006f34f7d3c4e0d00ddc6d8fb7f26a63f406f31cb15d6bea078831e623483752", "192192", "192", "192");
         assertEquals(503, resp.getStatus());
     }
     
     @Test
-    public void changePasswordShouldFailBecauseNewPassDoNotMatchWithConfirmPass() throws Exception
+    public void changePasswordShouldFailBecauseNewPassNotMatchWithConfirmPass() throws Exception
     {
         Response resp = userCtrl.changePassword("006f34f7d3c4e0d00ddc6d8fb7f26a63f406f31cb15d6bea078831e623483752", "111", "192", "199");
         assertEquals(503, resp.getStatus());

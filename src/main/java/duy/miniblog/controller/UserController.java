@@ -1,7 +1,6 @@
 package duy.miniblog.controller;
 
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -16,17 +15,20 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.map.ObjectMapper;
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import duy.miniblog.dao.TokenDAO;
-import duy.miniblog.dao.UserDAO;
+
+
+
 import duy.miniblog.entity.Token;
 import duy.miniblog.entity.User;
+import duy.miniblog.service.TokenService;
+import duy.miniblog.service.UserService;
 import duy.miniblog.util.Constant;
 import duy.miniblog.util.DateUtil;
 import duy.miniblog.util.EncryptionUtil;
@@ -38,10 +40,10 @@ public class UserController
 {
 
     @Autowired
-    private UserDAO userDao;    
-
+    private UserService userService;
+    
     @Autowired
-    private TokenDAO tokenDao;
+    private TokenService tokenService;
     
     /*
     @GET
@@ -59,10 +61,10 @@ public class UserController
             @FormParam("lastname") String ln, @FormParam("gender") Integer gd, @FormParam("birthdate") String bd, 
             @FormParam("email") String em) throws Exception
     {
-        if (userDao.checkUserName(un)){
+        if (userService.checkUserName(un)){
             return Response.status(503).entity("Username exists! Try other name").build();
         } else {
-            if (userDao.checkEmail(em)){
+            if (userService.checkEmail(em)){
                 return Response.status(503).entity("Email already have been used!").build();
             } else {
                 User u = new User();
@@ -73,7 +75,7 @@ public class UserController
                 u.setGender(gd);
                 u.setBirthDate(bd);
                 u.setEmail(em);
-                userDao.createUser(u);
+                userService.createUser(u);
                 return Response.status(201).entity("Dang ki thanh cong!").build();
             }
         }
@@ -86,7 +88,7 @@ public class UserController
     {
         User user;
         String accessToken = "";
-        user = userDao.checkLogin(un, EncryptionUtil.encryptString(ps));    
+        user = userService.checkLogin(un, EncryptionUtil.encryptString(ps));    
         if(user != null){           
             accessToken = EncryptionUtil.encryptString(Constant.SECRET_KEY + user.getId() + DateUtil.createAt());
             Token t = new Token();
@@ -94,7 +96,7 @@ public class UserController
             t.setAccess_token(accessToken);
             t.setCreate_at(DateUtil.createAt());
             t.setExpired(DateUtil.expired());        
-            tokenDao.createToken(t);
+            tokenService.createToken(t);
             return Response.status(201).entity(accessToken).build();
         } else {        
             //error code 2007: Login failed! Wrong username or password.
@@ -109,8 +111,8 @@ public class UserController
     @Consumes("application/json")
     public Response logout(@HeaderParam("accessToken") String accessToken) throws Exception
     {
-        if (tokenDao.checkToken(accessToken)) {
-        tokenDao.deleteToken(tokenDao.getToken(accessToken));
+        if (tokenService.checkToken(accessToken)) {
+        tokenService.deleteToken(tokenService.getToken(accessToken));
         return Response.status(200).entity("Log out thanh cong").build();
         } else {
             return Response.status(503).entity("Token doesn't exsist!").build();
@@ -122,9 +124,9 @@ public class UserController
     @Produces("application/json")
     public Response getUserInfo(@HeaderParam("accessToken") String accessToken) throws Exception
     {           
-       if (tokenDao.checkToken(accessToken)){
-           Integer id = tokenDao.getToken(accessToken).getUser().getId();
-           User user = userDao.getUserById(id);
+       if (tokenService.checkToken(accessToken)){
+           Integer id = tokenService.getToken(accessToken).getUser().getId();
+           User user = userService.getUserById(id);
            return Response.status(200).entity(user.toString()).build();
        } else {
            return Response.status(503).entity("Token have been deleted! Redirect to Home Page").build();
@@ -138,15 +140,15 @@ public class UserController
             @FormParam("lastname") String ln,@FormParam("avatar") String av, @FormParam("gender") Integer gd, 
             @FormParam("email") String em) throws Exception
     {
-        if (tokenDao.checkToken(accessToken)){            
-            Integer id = tokenDao.getToken(accessToken).getUser().getId();
-            User user = userDao.getUserById(id);
+        if (tokenService.checkToken(accessToken)){            
+            Integer id = tokenService.getToken(accessToken).getUser().getId();
+            User user = userService.getUserById(id);
             user.setFirstName(fn);
             user.setLastName(ln);
             user.setAvatar(av);
             user.setGender(gd);            
             user.setEmail(em);
-            userDao.updateUser(user);
+            userService.updateUser(user);
             return Response.status(200).entity("Successfully Updated!").build();
         } else {
             return Response.status(500).entity("Error code 300x! Token doesn't exists.").build();
@@ -159,14 +161,14 @@ public class UserController
     public Response changePassword(@HeaderParam("accessToken") String accessToken, @FormParam("oldpassword") String oldpass, 
             @FormParam("newpassword") String newpass, @FormParam("confirmpassword") String confirmpass) throws Exception
     {
-        if (tokenDao.checkToken(accessToken)){
+        if (tokenService.checkToken(accessToken)){
             if (newpass.compareTo(confirmpass) == 0){
-                Integer id = tokenDao.getToken(accessToken).getUser().getId();
-                User user = userDao.getUserById(id);
+                Integer id = tokenService.getToken(accessToken).getUser().getId();
+                User user = userService.getUserById(id);
                 if (EncryptionUtil.encryptString(oldpass).compareTo(user.getPassWord()) == 0){
                     user.setPassWord(EncryptionUtil.encryptString(newpass));
-                    userDao.updateUser(user);
-                    tokenDao.deleteTokenByUserId(id);
+                    userService.updateUser(user);
+                    tokenService.deleteTokenByUserId(id);
                     return Response.status(200).entity("Change password successful!").build();
                 } else {
                     return Response.status(200).entity("Error code 200x! Password doesn't match.").build();
@@ -184,7 +186,7 @@ public class UserController
     @Produces("application/json")
     public Response getSearchResult(@QueryParam("name") String name)
     {        
-        List<User> lst = userDao.searchByName(name);
+        List<User> lst = userService.searchByName(name);
         if (lst != null){            
             return Response.status(200).entity(lst).build();            
         } else {
