@@ -44,13 +44,6 @@ public class PostController
     @Autowired
     private UserDAO userDao;
     
-    @GET
-    @Path("hellopost")
-    public Response helloPost() 
-    {
-        return Response.status(200).entity("This is Post Rest").build();
-    }
-    
     @POST
     @Path("posts")
     @Consumes("application/x-www-form-urlencoded")
@@ -160,10 +153,4 @@ public class PostController
         }
     }
     
-    @GET
-    @Path("test/{id}")
-    public Response test(@HeaderParam("accessToken") String access, @PathParam("id") String idTest, @QueryParam("deact") Integer act)
-    {
-        return Response.status(200).entity(access + "..." + idTest + "..." +act).build();
-    }
 }

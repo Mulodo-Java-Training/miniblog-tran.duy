@@ -188,7 +188,7 @@ public class UserController
         if (lst != null){            
             return Response.status(200).entity(lst).build();            
         } else {
-            return Response.status(200).entity("Not Found User!").build();
+            return Response.status(503).entity("Not Found User!").build();
         }
     }
 }

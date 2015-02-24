@@ -54,15 +54,19 @@ public class CommentController
         if (tokenDao.checkToken(accessToken)){
             User user = tokenDao.getToken(accessToken).getUser();
             Post post = postDao.getPostById(postId);
-            Comment comment = new Comment();
-            comment.setTitle(title);
-            comment.setDescription(description);
-            comment.setCreated_at(DateUtil.createAt());
-            comment.setUpdated_at(DateUtil.createAt());
-            comment.setUser(user);
-            comment.setPost(post);
-            cmDao.createComment(comment);
-            return Response.status(200).entity("Create Comment Successful!").build();
+            if (post != null){
+                Comment comment = new Comment();
+                comment.setTitle(title);
+                comment.setDescription(description);
+                comment.setCreated_at(DateUtil.createAt());
+                comment.setUpdated_at(DateUtil.createAt());
+                comment.setUser(user);
+                comment.setPost(post);
+                cmDao.createComment(comment);
+                return Response.status(201).entity("Create Comment Successful!").build();
+            } else {
+                return Response.status(503).entity("Post Id doesn't exists!").build();
+            }            
         } else {
             return Response.status(503).entity("Token doesn't exists!").build();
         }
