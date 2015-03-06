@@ -19,7 +19,7 @@ import duy.miniblog.controller.CommentController;
         "file:src/main/webapp/WEB-INF/applicationContext.xml",
         "file:src/main/webapp/WEB-INF/DataSource.xml",
         "file:src/main/webapp/WEB-INF/Hibernate.xml",
-        "file:src/main/webapp/WEB-INF/web.xml"
+        //"file:src/main/webapp/WEB-INF/web.xml"
     }
 )
 public class CommentControllerTest

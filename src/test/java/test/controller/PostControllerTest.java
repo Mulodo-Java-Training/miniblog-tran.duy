@@ -19,7 +19,7 @@ import duy.miniblog.controller.PostController;
         "file:src/main/webapp/WEB-INF/applicationContext.xml",
         "file:src/main/webapp/WEB-INF/DataSource.xml",
         "file:src/main/webapp/WEB-INF/Hibernate.xml",
-        "file:src/main/webapp/WEB-INF/web.xml"
+        //"file:src/main/webapp/WEB-INF/web.xml"
     }
 )
 public class PostControllerTest
@@ -74,7 +74,7 @@ public class PostControllerTest
     @Test
     public void testUpdatePostShouldFailBecauseAccessTokenNotExist() throws Exception
     {
-        Response resp = postCtrl.updatePost("123", 11, "Đã Lâu Không Gặp", "Trịnh Thăng Bình");
+        Response resp = postCtrl.updatePost("123", 11, "Ä�Ã£ LÃ¢u KhÃ´ng Gáº·p", "Trá»‹nh ThÄƒng BÃ¬nh");
         assertEquals(503, resp.getStatus());
     }
     
@@ -82,7 +82,7 @@ public class PostControllerTest
     public void testUpdatePostShouldFailBecausePostIdNotExist() throws Exception
     {
         Response resp = postCtrl.updatePost("4df3fdf82633ed1069b47861c474292810d4339740fea142a26a7f1e69522b6c",
-                999999, "Đã Lâu Không Gặp", "Trịnh Thăng Bình");
+                999999, "Ä�Ã£ LÃ¢u KhÃ´ng Gáº·p", "Trá»‹nh ThÄƒng BÃ¬nh");
         assertEquals(503, resp.getStatus());
     }
     
@@ -90,7 +90,7 @@ public class PostControllerTest
     public void testUpdatePostShouldSuccess() throws Exception
     {
         Response resp = postCtrl.updatePost("4df3fdf82633ed1069b47861c474292810d4339740fea142a26a7f1e69522b6c",
-                11, "Đã Lâu Không Gặp", "Trịnh Thăng Bình");
+                11, "Ä�Ã£ LÃ¢u KhÃ´ng Gáº·p", "Trá»‹nh ThÄƒng BÃ¬nh");
         assertEquals(200, resp.getStatus());
     }
 
