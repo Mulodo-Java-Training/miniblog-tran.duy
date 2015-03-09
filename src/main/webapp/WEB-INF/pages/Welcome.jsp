@@ -35,20 +35,20 @@
       <h1><a href="#" style="font-size:45px;padding:10px;">Mini Blog</a></h1>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <form class="navbar-form navbar-right">
+      <form class="navbar-form navbar-right" action="apis/v1/login" method="post" enctype="application/x-www-form-urlencoded">
         <table>
         <tr>
         
         <td style="padding:5px">
           <div class="form-group has-feedback">
             
-            <input type="text" placeholder="User name" class="form-control" id="username"> 
+            <input type="text" placeholder="User name" class="form-control" name="username"> 
             <i class="glyphicon glyphicon-user form-control-feedback "></i>
           </div>
           </td>
           <td style="padding:5px">
           <div class="form-group has-feedback">
-            <input type="password" placeholder="Password" class="form-control">
+            <input type="password" placeholder="Password" class="form-control" name="password">
             <i class="glyphicon glyphicon-lock form-control-feedback"></i>
           </div>
           </td>
@@ -68,7 +68,7 @@
          </td>
          <td style="padding:5px; text-align:center">
           <label>
-            <a href="Register.html">Register</a>
+            <a href="register.html">Register</a>
           </label>
          </td>
          </tr>   
@@ -77,7 +77,8 @@
     </div>
   </div>
 </nav>
-<h1> Welcome</h1>
+<h1>Welcome</h1>
+<a href="test.html">test</a> | <a href="test2.html">test 2</a>
 <hr>
 <div class="container">
 <div class="jumbotron">

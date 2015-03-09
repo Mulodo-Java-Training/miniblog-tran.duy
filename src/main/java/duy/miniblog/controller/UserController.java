@@ -14,16 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-
-
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-
-
-
 
 import duy.miniblog.entity.Token;
 import duy.miniblog.entity.User;
@@ -45,15 +39,6 @@ public class UserController
     @Autowired
     private TokenService tokenService;
     
-    /*
-    @GET
-    @Path("hello")
-    public Response hello()
-    {
-        return Response.status(200).entity("I could show you incredible things").build();
-    }
-    */
-    
     @POST
     @Path("users")  
     @Consumes("application/x-www-form-urlencoded")// the MIME media type of the request to a resource
@@ -61,24 +46,24 @@ public class UserController
             @FormParam("lastname") String ln, @FormParam("gender") Integer gd, @FormParam("birthdate") String bd, 
             @FormParam("email") String em) throws Exception
     {
-        if (userService.checkUserName(un)){
-            return Response.status(503).entity("Username exists! Try other name").build();
-        } else {
-            if (userService.checkEmail(em)){
-                return Response.status(503).entity("Email already have been used!").build();
-            } else {
-                User u = new User();
-                u.setUserName(un);
-                u.setPassWord(EncryptionUtil.encryptString(ps));
-                u.setFirstName(fn);
-                u.setLastName(ln);
-                u.setGender(gd);
-                u.setBirthDate(bd);
-                u.setEmail(em);
-                userService.createUser(u);
-                return Response.status(201).entity("Dang ki thanh cong!").build();
-            }
-        }
+    	try {
+    		if (userService.checkUserName(un)) 
+    			return Response.status(503).entity("Username exists! Try other name").build();
+    		if (userService.checkEmail(em))
+    			return Response.status(503).entity("Email has been used! Try new one").build();
+    		User u = new User();
+            u.setUserName(un);
+            u.setPassWord(EncryptionUtil.encryptString(ps));
+            u.setFirstName(fn);
+            u.setLastName(ln);
+            u.setGender(gd);
+            u.setBirthDate(bd);
+            u.setEmail(em);
+            userService.createUser(u);
+            return Response.status(201).entity("Dang ki thanh cong!").build();
+    	} catch (Exception ex){
+    		return Response.status(500).entity("Server Error "+ ex.getMessage()).build();
+    	}    	
     }
     
     @POST
@@ -86,24 +71,22 @@ public class UserController
     @Consumes("application/x-www-form-urlencoded")
     public Response login(@FormParam("username") String un, @FormParam("password") String ps) throws Exception
     {
-        User user;
-        String accessToken = "";
-        user = userService.checkLogin(un, EncryptionUtil.encryptString(ps));    
-        if(user != null){           
+    	try {
+    		User user;
+            String accessToken = "";
+            user = userService.checkLogin(un, EncryptionUtil.encryptString(ps));
+            if(user == null) return Response.status(503).entity("You must register!").build();
             accessToken = EncryptionUtil.encryptString(Constant.SECRET_KEY + user.getId() + DateUtil.createAt());
             Token t = new Token();
             t.setUser(user);
             t.setAccess_token(accessToken);
             t.setCreate_at(DateUtil.createAt());
             t.setExpired(DateUtil.expired());        
-            tokenService.createToken(t);
-            return Response.status(201).entity(accessToken).build();
-        } else {        
-            //error code 2007: Login failed! Wrong username or password.
-            return Response.status(503).entity("Error Code 2007").build();
-            
-        }
-        
+            tokenService.createToken(t);            
+            return Response.status(201).entity(accessToken).header("accessToken", accessToken).build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error " + ex.getMessage()).build();
+    	}   
     }
     
     @POST
@@ -111,37 +94,40 @@ public class UserController
     @Consumes("application/json")
     public Response logout(@HeaderParam("accessToken") String accessToken) throws Exception
     {
-        if (tokenService.checkToken(accessToken)) {
-        tokenService.deleteToken(tokenService.getToken(accessToken));
-        return Response.status(200).entity("Log out thanh cong").build();
-        } else {
-            return Response.status(503).entity("Token doesn't exsist!").build();
-        }
+    	try {
+    		tokenService.deleteToken(tokenService.getToken(accessToken));
+    		return Response.status(200).entity("Log out thanh cong").build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error " + ex.getMessage()).build();
+    	}
     }
     
     @GET
     @Path("users")   
     @Produces("application/json")
     public Response getUserInfo(@HeaderParam("accessToken") String accessToken) throws Exception
-    {           
-       if (tokenService.checkToken(accessToken)){
-           Integer id = tokenService.getToken(accessToken).getUser().getId();
-           User user = userService.getUserById(id);
-           return Response.status(200).entity(user.toString()).build();
-       } else {
-           return Response.status(503).entity("Token have been deleted! Redirect to Home Page").build();
-       }
+    {  
+    	try {
+    		if (!tokenService.checkToken(accessToken)) return Response.status(503).entity("You must login!").build();
+    		Integer id = tokenService.getToken(accessToken).getUser().getId();
+            User user = userService.getUserById(id);
+            return Response.status(200).entity(user.toString()).build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @PUT
     @Path("users")
     @Consumes("application/x-www-form-urlencoded")
-    public Response updateUserInfo(@HeaderParam("accessToken") String accessToken, @FormParam("firstname") String fn, 
-            @FormParam("lastname") String ln,@FormParam("avatar") String av, @FormParam("gender") Integer gd, 
+    public Response updateUserInfo(@HeaderParam("accessToken") String accessToken, 
+    		@FormParam("firstname") String fn, @FormParam("lastname") String ln, 
+    		@FormParam("avatar") String av, @FormParam("gender") Integer gd, 
             @FormParam("email") String em) throws Exception
     {
-        if (tokenService.checkToken(accessToken)){            
-            Integer id = tokenService.getToken(accessToken).getUser().getId();
+    	try {
+    		if(!tokenService.checkToken(accessToken)) return Response.status(503).entity("You must login!").build();
+    		Integer id = tokenService.getToken(accessToken).getUser().getId();
             User user = userService.getUserById(id);
             user.setFirstName(fn);
             user.setLastName(ln);
@@ -150,9 +136,9 @@ public class UserController
             user.setEmail(em);
             userService.updateUser(user);
             return Response.status(200).entity("Successfully Updated!").build();
-        } else {
-            return Response.status(500).entity("Error code 300x! Token doesn't exists.").build();
-        }
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @PUT
@@ -161,24 +147,20 @@ public class UserController
     public Response changePassword(@HeaderParam("accessToken") String accessToken, @FormParam("oldpassword") String oldpass, 
             @FormParam("newpassword") String newpass, @FormParam("confirmpassword") String confirmpass) throws Exception
     {
-        if (tokenService.checkToken(accessToken)){
-            if (newpass.compareTo(confirmpass) == 0){
-                Integer id = tokenService.getToken(accessToken).getUser().getId();
-                User user = userService.getUserById(id);
-                if (EncryptionUtil.encryptString(oldpass).compareTo(user.getPassWord()) == 0){
-                    user.setPassWord(EncryptionUtil.encryptString(newpass));
-                    userService.updateUser(user);
-                    tokenService.deleteTokenByUserId(id);
-                    return Response.status(200).entity("Change password successful!").build();
-                } else {
-                    return Response.status(200).entity("Error code 200x! Password doesn't match.").build();
-                }
-            } else {
-                return Response.status(200).entity("Error code 200x! New and Confirm doesn't match.").build();
-            }
-        } else {
-            return Response.status(503).entity("Error code 300x! Token doesn't exists.").build();
-        }
+    	try {
+    		if (!tokenService.checkToken(accessToken)) return Response.status(503).entity("You must login!").build();
+    		if (newpass.compareTo(confirmpass) != 0) return Response.status(503).entity("Confirm password doesn't match!").build();
+            Integer id = tokenService.getToken(accessToken).getUser().getId();
+            User user = userService.getUserById(id);
+            if (EncryptionUtil.encryptString(oldpass).compareTo(user.getPassWord()) != 0) 
+            	return Response.status(503).entity("Old password doesn't match!").build();
+            user.setPassWord(EncryptionUtil.encryptString(newpass));
+            userService.updateUser(user);
+            tokenService.deleteTokenByUserId(id);
+            return Response.status(200).entity("Change password successful!").build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @GET
@@ -186,11 +168,12 @@ public class UserController
     @Produces("application/json")
     public Response getSearchResult(@QueryParam("name") String name)
     {        
-        List<User> lst = userService.searchByName(name);
-        if (lst != null){            
-            return Response.status(200).entity(lst).build();            
-        } else {
-            return Response.status(503).entity("Not Found User!").build();
-        }
+    	try {
+    		List<User> lst = userService.searchByName(name);
+    		if (lst != null) return Response.status(200).entity(lst).build();
+    		return Response.status(503).entity("Search Not Found").build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
 }

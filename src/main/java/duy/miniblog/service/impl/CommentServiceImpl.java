@@ -44,6 +44,11 @@ public class CommentServiceImpl implements CommentService
     {
         return cmDao.getCommentByPostId(postId);
     }
+    @Override
+    public void deleteAllCommentsByPostId(int postId)
+    {
+    	cmDao.deleteAllCommentsByPostId(postId);
+    }
     
     @Override
     public List<Comment> getCommentByUserId(int userId)

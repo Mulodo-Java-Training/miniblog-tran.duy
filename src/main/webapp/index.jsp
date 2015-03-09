@@ -1,1 +1,1 @@
-<jsp:forward page="welcome.htm"></jsp:forward>
+<jsp:forward page="welcome.html"></jsp:forward>

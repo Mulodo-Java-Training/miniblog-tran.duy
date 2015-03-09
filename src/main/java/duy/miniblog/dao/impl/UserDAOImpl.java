@@ -115,7 +115,7 @@ public class UserDAOImpl implements UserDAO{
     public List<User> searchByName(String name)
     {
         @SuppressWarnings("unchecked")
-        List<User> lst = template.find("from User where firstname = ? or lastname = ?", name, name);
+        List<User> lst = template.find("select id, firstName, lastName from User where firstname = ? or lastname = ?", name, name);
         if (lst.size() >= 1){
             return lst;
         } else {

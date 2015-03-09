@@ -1,6 +1,6 @@
 package duy.miniblog.entity;
 
-import java.io.Serializable;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,7 +16,8 @@ import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name="posts")
-public class Post implements Serializable {
+public class Post
+{
     
     @Id
     @GeneratedValue

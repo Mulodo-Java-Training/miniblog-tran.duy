@@ -1,5 +1,7 @@
 package duy.miniblog.controller;
 
+import javax.ws.rs.HeaderParam;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,26 +10,27 @@ public class LayoutController
 {
 
     @RequestMapping(value="welcome")
-    public String home()
+    public String home(@HeaderParam("accessToken") String accessToken) throws Exception
     {
-        return "Welcome";
+    	if(accessToken == null) return "Welcome";
+    	return "Home";
     }
     
     @RequestMapping(value="test")
-    public String test()
+    public String test() throws Exception
     {
-        return "Test";
+        return "Test"; 
     }
     
     @RequestMapping(value="register")
-    public String register()
+    public String register() throws Exception
     {
         return "Register";
     }
     
-    @RequestMapping(value="test2")
-    public String test2()
+    @RequestMapping(value="test2") 
+    public String test2() throws Exception
     {
-        return "Test2";
+        throw new Exception("Keep Moving Forward");
     }
 }

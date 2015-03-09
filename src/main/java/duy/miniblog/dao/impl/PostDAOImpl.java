@@ -43,13 +43,14 @@ public class PostDAOImpl implements PostDAO
         template.delete(post);
     }
     
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     @Transactional(readOnly = false)
     public List<Post> getAllPosts()
     {
-        @SuppressWarnings("unchecked")
-        List<Post> lst = template.find("from Post");
-        return lst;
+        
+        List<Post> lst = template.find("from Post where updated_at <= NOW() ORDER BY updated_at DESC");
+        return lst.subList(0, 10);
     }
     
     @Override
@@ -57,7 +58,7 @@ public class PostDAOImpl implements PostDAO
     public List<Post> getAllPostsByUserId(int id)
     {
         @SuppressWarnings("unchecked")
-        List<Post> lst = template.find("from Post where users_id = ?", id);
+        List<Post> lst = template.find("from Post where users_id = ? AND updated_at <= NOW() ORDER BY updated_at DESC", id);
         return lst;
     }
 

@@ -2,7 +2,7 @@ package duy.miniblog.entity;
 
 
 
-import java.io.Serializable;
+
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,7 +16,8 @@ import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name="tokens")
-public class Token implements Serializable{
+public class Token
+{
     
    
     @ManyToOne

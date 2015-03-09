@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -26,11 +27,13 @@ import javax.ws.rs.core.Response;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import duy.miniblog.entity.Post;
 import duy.miniblog.entity.User;
+import duy.miniblog.service.CommentService;
 import duy.miniblog.service.PostService;
 import duy.miniblog.service.TokenService;
 import duy.miniblog.service.UserService;
@@ -50,14 +53,19 @@ public class PostController
     @Autowired
     private PostService postService;
     
+    @Autowired 
+    private CommentService cmService;
+    
     @POST
     @Path("posts")
     @Consumes("application/x-www-form-urlencoded")
     public Response createPost(@HeaderParam("accessToken") String accessToken, @FormParam("title") String title, 
             @FormParam("description") String description) 
     {
-        if (tokenService.checkToken(accessToken)){
-            Integer id = tokenService.getToken(accessToken).getUser().getId();
+    	try {
+    		if (!tokenService.checkToken(accessToken)) 
+    			return Response.status(503).entity("You must login!").build();
+    		Integer id = tokenService.getToken(accessToken).getUser().getId();
             User user = userService.getUserById(id);
             Post post = new Post();
             post.setTitle(title);
@@ -67,21 +75,23 @@ public class PostController
             post.setUser(user);
             postService.createPost(post);
             return Response.status(201).entity("Create Post Success").build();
-        } else {
-            return Response.status(503).entity("Token doesn't exists!").build();
-        }
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @GET
     @Path("posts")    
     public Response getAllPosts(@HeaderParam("accessToken") String accessToken)
     {
-        if (tokenService.checkToken(accessToken)) {
-            List<Post> post = postService.getAllPosts();         
-            return Response.status(200).entity(post).build(); 
-        } else {
-            return Response.status(503).entity("Token doesn't exists!").build();                    
-        }
+    	try {
+    		if (!tokenService.checkToken(accessToken)) 
+    			return Response.status(503).entity("You must login!").build();
+    		List<Post> post = postService.getAllPosts();         
+            return Response.status(200).entity(post).build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @GET
@@ -89,13 +99,15 @@ public class PostController
     @Produces("application/json")
     public Response getAllPostsByUserId(@HeaderParam("accessToken") String accessToken)
     {
-        if (tokenService.checkToken(accessToken)){
-            Integer userId = tokenService.getToken(accessToken).getUser().getId();
-            List<Post> post = postService.getAllPostsByUserId(userId);
-            return Response.status(200).entity(post).build();
-        } else {
-            return Response.status(503).entity("Token doesn't exists!").build();
-        }
+    	try {
+    		if (!tokenService.checkToken(accessToken)) 
+    			return Response.status(503).entity("You must login").build();
+    		 Integer userId = tokenService.getToken(accessToken).getUser().getId();
+             List<Post> post = postService.getAllPostsByUserId(userId);
+             return Response.status(200).entity(post).build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @PUT
@@ -104,21 +116,18 @@ public class PostController
     public Response updatePost(@HeaderParam("accessToken") String accessToken, @PathParam("postId") Integer postId, 
             @FormParam("title") String tit, @FormParam("description") String desc)
     {
-        if (tokenService.checkToken(accessToken)){
-            try {
-                Post post = postService.getPostById(postId);
-                post.setTitle(tit);
-                post.setDescription(desc);
-                post.setUpdated_at(DateUtil.createAt());
-                postService.updatePost(post);
-                return Response.status(200).entity("Update successful!").build();
-            } catch (Exception e) {
-                return Response.status(503).entity("Error code 300x! "+e.getMessage()).build();
-            }
-        } else {
-            return Response.status(503).entity("Token doesn't exists!").build();
-        }
-             
+    	try {
+    		if (!tokenService.checkToken(accessToken)) 
+    			return Response.status(503).entity("You must login").build();
+    		Post post = postService.getPostById(postId);
+            post.setTitle(tit);
+            post.setDescription(desc);
+            post.setUpdated_at(DateUtil.createAt());
+            postService.updatePost(post);
+            return Response.status(200).entity("Update successful!").build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @PUT
@@ -127,36 +136,33 @@ public class PostController
     public Response deactivePost(@HeaderParam("accessToken") String accessToken, @PathParam("postId") Integer postId, 
             @QueryParam("deactive") Integer deactive)
     {
-        if (tokenService.checkToken(accessToken)){
-            Post post = postService.getPostById(postId);
-            if (post != null){
-                post.setDeactived(deactive);
-                post.setUpdated_at(DateUtil.createAt());
-                postService.updatePost(post);
-                return Response.status(200).entity("Deactived!").build();
-            } else {
-                return Response.status(503).entity("Error code 300x!").build();
-            }
-        } else {
-            return Response.status(503).entity("Token doesn't exists!").build();
-        }
+    	try {
+    		if (!tokenService.checkToken(accessToken))
+    			return Response.status(503).entity("You must login!").build();
+    		Post post = postService.getPostById(postId);
+    		if (post == null) 
+    			return Response.status(503).entity("Post has already been delete!").build();
+    		post.setDeactived(deactive);
+            post.setUpdated_at(DateUtil.createAt());
+            postService.updatePost(post);
+            return Response.status(200).entity("Deactived Successful!").build();
+    	} catch (Exception ex) {
+    		return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+    	}
     }
     
     @DELETE
     @Path("posts/{postId}")
     public Response deletePost(@HeaderParam("accessToken") String accessToken, @PathParam("postId") Integer postId)
     {
-        if (tokenService.checkToken(accessToken)){          
-            Post post = postService.getPostById(postId);
-                if (post != null){                    
-                postService.deletePost(post);
-                return Response.status(200).entity("Delete Successful!").build();           
-            } else {
-                return Response.status(503).entity("Error code 300x!").build();
-            }
-        } else {
-            return Response.status(503).entity("Token doesn't exists!").build();
-        }
+    	if (!tokenService.checkToken(accessToken)) 
+    		return Response.status(503).entity("You must login!").build();
+    	Post post = postService.getPostById(postId);
+    	if (post == null)
+    		return Response.status(503).entity("Post has already been deleted!").build();
+    	cmService.deleteAllCommentsByPostId(postId);
+    	postService.deletePost(post);
+        return Response.status(200).entity("Delete Successful!").build();
     }
     
 }

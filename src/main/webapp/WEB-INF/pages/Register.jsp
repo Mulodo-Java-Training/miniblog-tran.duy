@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +19,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>  
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src="js/ngApp.js"></script>
+    <script src="resources/js/ngApp.js"></script>
 </head>
 <body ng-app="validationApp" ng-controller="registerCtrl">
 
@@ -31,7 +34,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <h1><a href="Welcome.html" style="font-size:45px;padding:10px;">Mini Blog</a></h1>
+      <h1><a href="welcome.html" style="font-size:45px;padding:10px;">Mini Blog</a></h1>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <form class="navbar-form navbar-right">
@@ -83,7 +86,7 @@
    
   <div class="row">
     <div class="col-md-9">
-      <form action="123" method="POST" role="form" id="registerForm" name="registerForm" novalidate>
+      <form action="apis/v1/users" method="POST" role="form" id="registerForm" name="registerForm" novalidate>
         <legend>Register</legend>
         <!-- USERNAME -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.username.$invalid && registerForm.username.$dirty, 'has-success': registerForm.username.$valid}">

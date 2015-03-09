@@ -20,9 +20,13 @@
         class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
 
     <!-- Spring MVC annotation -->
+    
+    <!-- mapping to folder webapp/resources/ js, images,css for jsp page-->
+    <mvc:resources location="/resources/" mapping="/resources/**"/>
+    
     <mvc:annotation-driven />
     <context:annotation-config />
     
-   <context:component-scan base-package="duy.miniblog.controller"></context:component-scan>
+   <context:component-scan base-package="duy.miniblog"></context:component-scan>
    
  </beans>

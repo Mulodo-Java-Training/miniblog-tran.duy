@@ -47,7 +47,8 @@ public class CommentDAOImpl implements CommentDAO
     public Comment getCommentById(int commentId)
     {
         @SuppressWarnings("unchecked")
-        List<Comment> lst = template.find("from Comment where id = ?", commentId);
+        List<Comment> lst = template.find("from Comment where id = ? AND updated_at <= NOW() "
+        		+ "ORDER BY updated_at DESC", commentId);
         if (lst.size() == 1){
             return lst.get(0);
         } else {
@@ -60,7 +61,8 @@ public class CommentDAOImpl implements CommentDAO
     public List<Comment> getCommentByPostId(int postId)
     {
         @SuppressWarnings("unchecked")
-        List<Comment> lst = template.find("from Comment where posts_id = ?", postId);
+        List<Comment> lst = template.find("from Comment where posts_id = ? AND updated_at <= NOW() "
+        		+ "ORDER BY updated_at DESC", postId);
         if (lst.size() > 0){
             return lst;
         } else {
@@ -70,10 +72,20 @@ public class CommentDAOImpl implements CommentDAO
     
     @Override
     @Transactional(readOnly = false)
+    public void deleteAllCommentsByPostId(int postId)
+    {
+    	@SuppressWarnings("unchecked")
+		List<Comment> lst = template.find("from Comment where posts_id = ?", postId);
+    	template.deleteAll(lst);
+    }
+    
+    @Override
+    @Transactional(readOnly = false)
     public List<Comment> getCommentByUserId(int userId)
     {
         @SuppressWarnings("unchecked")
-        List<Comment> lst = template.find("from Comment where users_id = ?", userId);
+        List<Comment> lst = template.find("from Comment where users_id = ? AND updated_at <= NOW() "
+        		+ "ORDER BY updated_at DESC", userId);
         if (lst.size() > 0){
             return lst;
         } else {

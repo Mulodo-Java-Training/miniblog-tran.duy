@@ -1,8 +1,6 @@
 package duy.miniblog.entity;
 
 
-import java.io.Serializable;
-
 import java.util.Set;
 
 
@@ -18,7 +16,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name="users")
-public class User implements Serializable{
+public class User
+{
     
     @Id
     @GeneratedValue
