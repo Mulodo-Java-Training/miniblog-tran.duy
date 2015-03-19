@@ -14,37 +14,37 @@ public class PostServiceImpl implements PostService
 {
     @Autowired
     private PostDAO postDao;
-    
+
     @Override
     public void createPost(Post post)
     {
         postDao.createPost(post);
     }
-    
+
     @Override
     public void updatePost(Post post)
     {
         postDao.updatePost(post);
     }
-    
+
     @Override
     public void deletePost(Post post)
     {
         postDao.deletePost(post);
     }
-    
+
     @Override
     public List<Post> getAllPosts()
     {
         return postDao.getAllPosts();
     }
-    
+
     @Override
     public List<Post> getAllPostsByUserId(int id)
     {
         return postDao.getAllPostsByUserId(id);
     }
-    
+
     @Override
     public Post getPostById(int id)
     {

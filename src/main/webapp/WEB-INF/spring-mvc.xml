@@ -19,10 +19,15 @@
     <bean id="viewResolver" p:prefix="/WEB-INF/pages/" p:suffix=".jsp" 
         class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
 
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	    <property name="basename" value="message"/>
+	</bean>
+	
     <!-- Spring MVC annotation -->
     
     <!-- mapping to folder webapp/resources/ js, images,css for jsp page-->
     <mvc:resources location="/resources/" mapping="/resources/**"/>
+    <mvc:resources location="/images/" mapping="/images/**"/>
     
     <mvc:annotation-driven />
     <context:annotation-config />

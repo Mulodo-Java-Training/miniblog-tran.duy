@@ -11,13 +11,13 @@ import duy.miniblog.dao.PostDAO;
 import duy.miniblog.entity.Post;
 
 @Repository
-public class PostDAOImpl implements PostDAO 
-{    
-    
+public class PostDAOImpl implements PostDAO
+{
+
     @Autowired
-    private HibernateTemplate template;    
-    
-    public void setTemplate(HibernateTemplate template) 
+    private HibernateTemplate template;
+
+    public void setTemplate(HibernateTemplate template)
     {
         this.template = template;
     }
@@ -28,37 +28,40 @@ public class PostDAOImpl implements PostDAO
     {
         template.save(post);
     }
-    
+
     @Override
     @Transactional(readOnly = false)
     public void updatePost(Post post)
     {
         template.update(post);
     }
-    
+
     @Override
     @Transactional(readOnly = false)
     public void deletePost(Post post)
     {
         template.delete(post);
     }
-    
+
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     @Transactional(readOnly = false)
     public List<Post> getAllPosts()
     {
-        
-        List<Post> lst = template.find("from Post where updated_at <= NOW() ORDER BY updated_at DESC");
+
+        List<Post> lst = template
+                .find("from Post where updated_at <= NOW() ORDER BY updated_at DESC");
         return lst.subList(0, 10);
     }
-    
+
     @Override
     @Transactional(readOnly = false)
     public List<Post> getAllPostsByUserId(int id)
     {
         @SuppressWarnings("unchecked")
-        List<Post> lst = template.find("from Post where users_id = ? AND updated_at <= NOW() ORDER BY updated_at DESC", id);
+        List<Post> lst = template
+                .find("from Post where users_id = ? AND updated_at <= NOW() ORDER BY updated_at DESC",
+                        id);
         return lst;
     }
 
@@ -68,11 +71,11 @@ public class PostDAOImpl implements PostDAO
     {
         @SuppressWarnings("unchecked")
         List<Post> lst = template.find("from Post where id = ?", id);
-        if (lst.size() == 1){
-        return lst.get(0);
+        if (lst.size() == 1) {
+            return lst.get(0);
         } else {
             return null;
         }
     }
-    
+
 }

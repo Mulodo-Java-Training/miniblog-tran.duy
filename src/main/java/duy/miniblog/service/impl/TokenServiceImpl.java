@@ -10,34 +10,34 @@ import duy.miniblog.service.TokenService;
 @Service
 public class TokenServiceImpl implements TokenService
 {
-    
+
     @Autowired
     private TokenDAO tokenDao;
-    
+
     @Override
     public void createToken(Token token)
     {
         tokenDao.createToken(token);
     }
-    
+
     @Override
     public void deleteToken(Token token)
     {
         tokenDao.deleteToken(token);
     }
-    
+
     @Override
     public void deleteTokenByUserId(int id)
     {
         tokenDao.deleteTokenByUserId(id);
     }
-    
+
     @Override
     public Token getToken(String accessToken)
     {
         return tokenDao.getToken(accessToken);
     }
-    
+
     @Override
     public Boolean checkToken(String accessToken)
     {

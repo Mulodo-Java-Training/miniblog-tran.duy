@@ -46,14 +46,14 @@ public class PostControllerTest
     @Test
     public void testGetAllPostsShouldFailBecauseAccessTokenNotExist() throws Exception
     {
-        Response resp = postCtrl.getAllPosts("123");
+        Response resp = postCtrl.getAllPosts();
         assertEquals(503, resp.getStatus());
     }
     
     @Test
     public void testGetAllPostsShouldSuccess() throws Exception
     {
-        Response resp = postCtrl.getAllPosts("7711cef28d64917b12f9db936749e690a21cdb11dac14999e1046b8e0d915896");
+        Response resp = postCtrl.getAllPosts();
         assertEquals(200, resp.getStatus());
     }
 
