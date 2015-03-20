@@ -76,4 +76,9 @@ public class UserServiceImpl implements UserService
         return userDao.searchByName(name);
     }
 
+    @Override
+    public List<User> listAllName()
+    {
+        return userDao.listAllName();
+    }
 }

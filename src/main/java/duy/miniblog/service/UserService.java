@@ -27,4 +27,6 @@ public interface UserService
 
     public List<User> searchByName(String name);
 
+    public List<User> listAllName();
+    
 }

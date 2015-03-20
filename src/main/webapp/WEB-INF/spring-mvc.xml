@@ -28,6 +28,7 @@
     <!-- mapping to folder webapp/resources/ js, images,css for jsp page-->
     <mvc:resources location="/resources/" mapping="/resources/**"/>
     <mvc:resources location="/images/" mapping="/images/**"/>
+    <mvc:resources location="/js/" mapping="/js/**"/>
     
     <mvc:annotation-driven />
     <context:annotation-config />

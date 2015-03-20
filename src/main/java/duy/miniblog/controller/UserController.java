@@ -214,12 +214,20 @@ public class UserController
     public Response getSearchResult(@QueryParam("name") String name)
     {
         try {
-            List<User> lst = userService.searchByName(name);
+            List<User> lst = userService.searchByName(name); 
             if (lst != null)
                 return Response.status(200).entity(lst).build();
             return Response.status(503).entity("Search Not Found").build();
         } catch (Exception ex) {
             return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
         }
+    }
+    
+    @GET
+    @Path("users/list")
+    public Response getAllName()
+    {
+        List<User> lst = userService.listAllName();
+        return Response.status(200).entity(lst).build();
     }
 }

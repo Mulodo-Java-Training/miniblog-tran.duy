@@ -77,7 +77,7 @@ public class PostController
     public Response getAllPosts()
     {
         List<Post> post = postService.getAllPosts();
-        return Response.status(200).entity(post).build();
+        return Response.status(200).entity(post.toString()).build();
     }
 
     /*
@@ -102,7 +102,7 @@ public class PostController
     @GET
     @Path("posts/users")
     @Produces("application/json")
-    public Response getAllPostsByUserId(@HeaderParam("accessToken") String accessToken)
+    public Response getAllPostsByUserWithToken(@HeaderParam("accessToken") String accessToken)
     {
         try {
             if (!tokenService.checkToken(accessToken))
@@ -115,6 +115,13 @@ public class PostController
         }
     }
 
+    @GET
+    @Path("posts/users/{userId}")
+    public Response getAllPostsByUserId(@PathParam("userId") Integer userId)
+    {
+        List<Post> post = postService.getAllPostsByUserId(userId);
+        return Response.status(200).entity(post).build();
+    }
     @PUT
     @Path("posts/{postId}")
     @Consumes("application/x-www-form-urlencoded")

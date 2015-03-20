@@ -26,4 +26,7 @@ public interface UserDAO
     public Boolean checkEmail(String email);
 
     public List<User> searchByName(String name);
+    
+    public List<User> listAllName();
+    
 }

@@ -124,4 +124,16 @@ public class UserDAOImpl implements UserDAO
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional(readOnly = false)
+    public List<User> listAllName()
+    {
+        List<User> lst = template.find("select firstName, lastName from User ORDER BY firstname");
+        if (lst.size() > 0) {
+            return lst;
+        } else {
+            return null;
+        }
+    }
 }
