@@ -1,7 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,66 +16,69 @@
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>  
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <script src="resources/js/ngApp.js"></script>
+	<script type="text/javascript" src="js/angularApp.js"></script>
 </head>
-<body ng-app="validationApp" ng-controller="registerCtrl">
+<body ng-app="blogApp" ng-controller="registerCtrl">
 
 <!-- navbar -->
-<nav class="navbar navbar-inverse "> <!-- "navbar-fixed-top" -->
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
-          data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <h1><a href="welcome.html" style="font-size:45px;padding:10px;">Mini Blog</a></h1>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <form class="navbar-form navbar-right">
-        <table>
-        <tr>
-        
-        <td style="padding:5px">
-          <div class="form-group has-feedback">
-            
-            <input type="text" placeholder="User name" class="form-control" id="username"> 
-            <i class="glyphicon glyphicon-user form-control-feedback "></i>
-          </div>
-          </td>
-          <td style="padding:5px">
-          <div class="form-group has-feedback">
-            <input type="password" placeholder="Password" class="form-control">
-            <i class="glyphicon glyphicon-lock form-control-feedback"></i>
-          </div>
-          </td>
-         <td style="padding:5px;">
-         <h3><a href="Home.html">Sign In</a></h3>
-          <!--<button type="submit" class="btn btn-success">Sign in</button>-->
-          </td>
-          </tr>
-          <tr>
-          <td></td>
-         <td style="padding:5px;text-align:center">
-         <div>
-          <label>
-            <a href="#">Forget your password!</a>
-          </label>
-         </div>
-         </td>
-         <td style="padding:5px; text-align:center">
-          <label>
-            <a href="Register.html">Register</a>
-          </label>
-         </td>
-         </tr>   
-         </table>
-      </form>
-    </div>
-  </div>
-</nav>
+<nav class="navbar navbar-inverse ">
+		<!-- "navbar-fixed-top" -->
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<h1>
+					<a href="#" style="font-size: 45px; padding: 10px;">Mini Blog</a>
+				</h1>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<form class="navbar-form navbar-right" action="apis/v1/login"
+					method="post" enctype="application/x-www-form-urlencoded">
+					<table>
+						<tr>
+
+							<td style="padding: 5px">
+								<div class="form-group has-feedback">
+
+									<input type="text" placeholder="User name" class="form-control"
+										name="username"> <i
+										class="glyphicon glyphicon-user form-control-feedback "></i>
+								</div>
+							</td>
+							<td style="padding: 5px">
+								<div class="form-group has-feedback">
+									<input type="password" placeholder="Password"
+										class="form-control" name="password"> <i
+										class="glyphicon glyphicon-lock form-control-feedback"></i>
+								</div>
+							</td>
+							<td style="padding: 5px;">
+								<!-- <h3><a href="Home.html">Sign In</a></h3>  -->
+								<button type="submit" class="btn btn-success">Sign in</button>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td style="padding: 5px; text-align: center">
+								<div>
+									<label> <a href="#">Forget your password!</a>
+									</label>
+								</div>
+							</td>
+							<td style="padding: 5px; text-align: center"><label>
+									<a href="register.html">Register</a>
+							</label></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</nav>
 <h1>Register</h1>
 <hr>
 <div class="container">
@@ -86,7 +86,7 @@
    
   <div class="row">
     <div class="col-md-9">
-      <form action="apis/v1/users" method="POST" role="form" id="registerForm" name="registerForm" novalidate>
+      <form action="123" method="POST" role="form" id="registerForm" name="registerForm" novalidate>
         <legend>Register</legend>
         <!-- USERNAME -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.username.$invalid && registerForm.username.$dirty, 'has-success': registerForm.username.$valid}">
@@ -132,7 +132,7 @@
         </div>
         <!-- BIRTH DATE -->
         <div class="form-group has-feedback" ng-class="{'has-success': registerForm.birthdate.$dirty, 'has-error': registerForm.birthdate.$invalid && registerForm.birthdate.$dirty}">
-          <input type="text" class="form-control" name="birthdate" placeholder="Birth Date" ng-model="birthdate" required>
+          <input type="date" class="form-control" name="birthdate" placeholder="Birth Date" ng-model="birthdate" required min="1950-01-01" max="2015-01-01">
           <p ng-show="registerForm.birthdate.$error.required && !registerForm.birthdate.$pristine" class="help-block">Birth Date is required.</p>
           <i ng-show="registerForm.birthdate.$invalid && registerForm.birthdate.$dirty" class="glyphicon glyphicon-alert form-control-feedback"></i>
           <i ng-show="registerForm.birthdate.$valid" class="glyphicon glyphicon-ok form-control-feedback"></i>
@@ -149,34 +149,34 @@
       </form>
       <hr>
     </div>
-    <div class="col-md-3">
-     <div class="form-group has-feedback">            
-            <input type="text" placeholder="Search posts..." class="form-control"> 
-            <i class="glyphicon glyphicon-search form-control-feedback "></i>
-     </div>
-    <table class="table">
-    <tr><td>
-    <h4><a href="PostDetail.html">Post Title 1</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 2</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 3</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 4</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 5</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    </table>
-    </div>
+	<div class="col-md-3" data-ng-controller="allPostsCtrl">
+					<div class="form-group has-feedback">
+						<input ng-model="searchPost.title" type="text" placeholder="Search posts by title..."
+							class="form-control" name="searchInput"> <i
+							class="glyphicon glyphicon-search form-control-feedback "></i>
+					</div>					
+					<table class="table" ng-show="searchPost.title.length">		
+							<tr data-ng-repeat="lst in listPosts | filter : searchPost as results">
+								<td>									
+									<h4>
+										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
+									</h4>
+									<p>{{lst.description}}</p>
+								</td>
+							</tr>	
+							<tr ng-if="results.length == 0"><td><h3>No results found...</h3></td></tr>	
+					</table>
+					<table class="table" ng-show="!searchPost.title.length">			
+							<tr data-ng-repeat="lst in listPosts | limitTo : 5">
+								<td>									
+									<h4>
+										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
+									</h4>
+									<p>{{lst.description}}</p>
+								</td>
+							</tr>	
+					</table>
+				</div>
   </div>
 </div>
 </div>

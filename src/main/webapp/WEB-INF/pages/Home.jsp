@@ -50,8 +50,8 @@
        <li class="dropdown">
        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding:25px;">Hi, Duy Tran <span class="caret"></span></a>
        <ul class="dropdown-menu" role="menu">
-         <li><a href="MyProfile.html">My Profile</a></li>
-         <li><a href="MyPosts.html">My Posts</a></li>
+         <li><a href="myProfile.html">My Profile</a></li>
+         <li><a href="myPosts.html">My Posts</a></li>
          <li class="divider"></li>
          <li><a href="#">Log Out</a></li>         
        </ul>

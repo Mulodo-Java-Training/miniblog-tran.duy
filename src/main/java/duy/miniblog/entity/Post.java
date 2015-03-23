@@ -124,7 +124,7 @@ public class Post
                 + "\", \"description\":\"" + description + "\", \"created_at\":\"" + created_at
                 + "\", \"updated_at\":\"" + updated_at + "\", \"deactived\":\"" + deactived
                 + "\", \"firstName\":\"" + user.getFirstName() + "\", \"lastName\":\"" + user.getLastName()
-                + "\", \"user_id\":\"" + user.getId() + "\"}";
+                + "\", \"avatar\":\"" + user.getAvatar() + "\", \"user_id\":\"" + user.getId() + "\"}";
 
     }
     

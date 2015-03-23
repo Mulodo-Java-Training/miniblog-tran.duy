@@ -10,7 +10,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-    <script src="ckeditor/ckeditor.js"></script>
+    <script src="js/ckeditor/ckeditor.js"></script>
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -70,7 +70,7 @@
 <div class="jumbotron">
    
   <div class="row">
-    <div class="col-md-9">
+  	<div class="col-md-9">
     <form action="" method="POST" role="form" name="formUpdate" novalidate>
       <legend>Create new post</legend>  
       <div class="form-group">
@@ -153,35 +153,35 @@
           </nav>
           </div>
     </div>
-    </div>   
-    <div class="col-md-3">
+  	</div>   
+  	<div class="col-md-3">
      <div class="form-group has-feedback">            
             <input type="text" placeholder="Search posts..." class="form-control"> 
             <i class="glyphicon glyphicon-search form-control-feedback "></i>
      </div>
     <table class="table">
     <tr><td>
-    <h4><a href="PostDetail.html">Post Title 1</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 2</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 3</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 4</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    <tr><td>
-    <h4><a href="#">Post Title 5</a></h4>
-    <p>HLV Miura đã giảm các bài tập thể lực</p>
-    </td></tr>
-    </table>
-    </div>
+  	<h4><a href="PostDetail.html">Post Title 1</a></h4>
+  	<p>HLV Miura đã giảm các bài tập thể lực</p>
+  	</td></tr>
+  	<tr><td>
+  	<h4><a href="#">Post Title 2</a></h4>
+  	<p>HLV Miura đã giảm các bài tập thể lực</p>
+  	</td></tr>
+  	<tr><td>
+  	<h4><a href="#">Post Title 3</a></h4>
+  	<p>HLV Miura đã giảm các bài tập thể lực</p>
+  	</td></tr>
+  	<tr><td>
+  	<h4><a href="#">Post Title 4</a></h4>
+  	<p>HLV Miura đã giảm các bài tập thể lực</p>
+  	</td></tr>
+  	<tr><td>
+  	<h4><a href="#">Post Title 5</a></h4>
+  	<p>HLV Miura đã giảm các bài tập thể lực</p>
+  	</td></tr>
+  	</table>
+  	</div>
   </div>
 </div>
 </div>

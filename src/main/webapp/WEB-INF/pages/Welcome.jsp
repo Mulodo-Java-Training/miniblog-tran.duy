@@ -19,12 +19,12 @@
 <!-- Latest compiled JavaScript -->
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script
-	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script type="text/javascript" src="js/angularApp.js"></script>
 
 
 </head>
-<body>
+<body data-ng-app="blogApp">
 
 	<!-- navbar -->
 	<nav class="navbar navbar-inverse ">
@@ -86,7 +86,9 @@
 		</div>
 	</nav>
 	<h1>Welcome</h1>
-	<a href="test.html">test</a> |
+	<a href="home.html">Home</a> |
+	<a href="myProfile.html">My Profile</a> |
+	<a href="myPosts.html">My Posts</a> |
 	<a href="test2.html">test 2</a> |
 	<a href="validateForm.html">Test Form</a> |
 	<a href="atest.html">test test</a> |
@@ -98,66 +100,67 @@
 		<div class="jumbotron">
 
 			<div class="row">
-				<div class="col-md-9">
-					<table class="table">
-						<c:forEach var="x" items="${listAllPosts }">
-							<tr>
+				<!-- All Posts -->
+				<div class="col-md-9" data-ng-controller="allPostsCtrl">
+					<table class="table">						
+							<tr data-ng-repeat="lst in listPosts">
 								<td>
-									<div>
-										<img src="images/${x.user.avatar }" alt="Avatar"
-											style="float: left; width: 100px; height: 100px">
-										<h2>
-											<a href="apis/v1/post/${x.id }">${x.title }</a>
-										</h2>
-										<h4 style="float: left">Author: ${x.user.firstName }
-											${x.user.lastName }</h4>
-										<h4 style="floag: right">Updated: ${x.updated_at }</h4>
-									</div> <br> ${x.description }
+									<div class="row">
+											<div class="col-md-2">
+												<img style="width: 100px; height: 100px" src="images/{{lst.avatar}}" alt="Avatar">
+											</div>
+											<div class="col-md-10">										
+												<h2>
+													<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
+												</h2>
+											<div>
+												<h4 style="float: left; padding: 5px;">Author: {{lst.firstName + ' ' + lst.lastName}} </h4>
+												<h4 style="float: right; padding: 5px;">Updated: {{lst.updated_at}}</h4>
+											</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-9">
+											  	{{lst.description}}
+										 	 <a href="apis/v1/post/{{lst.id}}">Read More...</a>
+									  	</div>
+										</div>	
 								</td>
-							</tr>
-
-						</c:forEach>
-						<tr>
-							<td>
-								<h2>
-									<a href="#">Post Title 5</a>
-								</h2>
-								<h4>Author Duy Tran</h4>
-								<p>HLV Miura đã giảm các bài tập thể lực để dành thời gian
-									khớp bộ khung đội hình Olympic Việt Nam chuẩn bị cho các trận
-									đấu giao hữu sắp tới.</p> <a href="#">Read more....</a>
-							</td>
-						</tr>
+							</tr>				
 					</table>
 				</div>
 				<br />
-				<div class="col-md-3">
+				
+				<!-- Search Posts: Start -->
+				<div class="col-md-3" data-ng-controller="allPostsCtrl">
 					<div class="form-group has-feedback">
-						<input type="text" placeholder="Search posts..."
-							class="form-control"> <i
+						<input ng-model="searchPost.title" type="text" placeholder="Search posts by title..."
+							class="form-control" name="searchInput"> <i
 							class="glyphicon glyphicon-search form-control-feedback "></i>
-					</div>
-					<table class="table">
-						<c:forEach var="x" items="${listAllPosts }">
-							<tr>
-								<td>
+					</div>					
+					<table class="table" ng-show="searchPost.title.length">		
+							<tr data-ng-repeat="lst in listPosts | filter : searchPost as results">
+								<td>									
 									<h4>
-										<a href="apis/v1/post/${x.id }"> ${x.title }</a>
+										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
 									</h4>
-									<p>${x.description }</p>
+									<p>{{lst.description}}</p>
 								</td>
-							</tr>
-						</c:forEach>
-						<tr>
-							<td>
-								<h4>
-									<a href="#">Post Title 5</a>
-								</h4>
-								<p>HLV Miura đã giảm các bài tập thể lực</p>
-							</td>
-						</tr>
+							</tr>	
+							<tr ng-if="results.length == 0"><td><h3>No results found...</h3></td></tr>	
+					</table>
+					<table class="table" ng-show="!searchPost.title.length">			
+							<tr data-ng-repeat="lst in listPosts | limitTo : 5">
+								<td>									
+									<h4>
+										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
+									</h4>
+									<p>{{lst.description}}</p>
+								</td>
+							</tr>	
 					</table>
 				</div>
+				<!-- Search Posts: End -->
 			</div>
 		</div>
 	</div>

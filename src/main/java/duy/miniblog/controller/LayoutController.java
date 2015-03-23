@@ -65,16 +65,28 @@ public class LayoutController
         return "FormPage";
     }
 
-    @RequestMapping(value = "test")
+    @RequestMapping(value = "home")
     public String test() throws Exception
     {
-        return "Test";
+        return "Home";
     }
 
     @RequestMapping(value = "register")
     public String register() throws Exception
     {
         return "Register";
+    }
+    
+    @RequestMapping(value = "myProfile")
+    public String myProfile() throws Exception
+    {
+        return "MyProfile";
+    }
+    
+    @RequestMapping(value = "myPosts")
+    public String myPosts() throws Exception
+    {
+        return "MyPosts";
     }
 
     @RequestMapping(value = "test2")
