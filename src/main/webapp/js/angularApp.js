@@ -19,8 +19,46 @@ app.controller('searchPostsCtrl', ['$scope', '$http', function ($scope, $http) {
 	});
 }]);
 
-app.controller('registerCtrl', ['$scope', function ($scope) {	
+app.controller('testSubmitCtrl', ['$scope', '$http', function($scope, $http) {
 	
+}]);
+
+app.controller('registerCtrl', ['$scope', '$http', function ($scope, $http) {
+	$scope.submit1 = function(){
+		$http({
+			method: 'GET',
+			url: 'apis/v1/posts'
+		})
+		.success(function(data, status, headers, config) {
+		    $scope.list = data;
+		    $scope.msg = status;
+		    $scope.msg1 = headers;
+		    $scope.msg2 = config;
+		  });
+	};
+	
+	$scope.submit = function(user){
+		$http({
+			method : 'POST',
+			url : 'apis/v1/users',
+			data : $.param(user), // pass in data as strings
+			// set the headers so angular passing info as form data
+			headers : {
+				'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+			}
+		})
+		.success(function(data) {
+			console.log(data);
+			$scope.user.message = data;
+			console.log($scope);
+			})
+		.error(function(data) {
+			console.log(data);
+			$scope.user.message = data;
+			console.log($scope);
+		});
+		$scope.message = "123456";
+		};
 }]);
 
 app.controller('myProfileCtrl', ['$scope', function ($scope) {	

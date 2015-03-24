@@ -13,6 +13,14 @@
 </head>
 <body onload="load2()" ng-app="ajaxApp">
 
+<h1>Test Angular Submit: Start *******************</h1>
+<form ng-submit="submit()" ng-controller="testSubmitCtrl">
+	<input type="submit" value="Get All Posts">
+	<h3>Results: </h3> <br/>
+	{{list}}
+</form>
+<h1>Test Angular Submit: End ******************</h1>
+
 <h1>Angular: Search user by firstname, lastname</h1>
 
 <h1>Search by name</h1>

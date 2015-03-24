@@ -17,6 +17,8 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>  
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 	<script type="text/javascript" src="js/angularApp.js"></script>
+	<script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+	
 </head>
 <body ng-app="blogApp" ng-controller="registerCtrl">
 
@@ -81,16 +83,29 @@
 	</nav>
 <h1>Register</h1>
 <hr>
+<h1>Test Angular Submit: Start *******************</h1>
+<form ng-submit="submit1()">
+	<input type="submit" value="Get All Posts">
+	<h3>Results: </h3> <br/>
+	{{msg}}
+	<br/>
+	{{msg1}}
+	<br/>
+	{{msg2}}
+	<br/>
+	{{list}}
+</form>
+<h1>Test Angular Submit: End ******************</h1>
 <div class="container">
 <div class="jumbotron">
    
   <div class="row">
     <div class="col-md-9">
-      <form action="123" method="POST" role="form" id="registerForm" name="registerForm" novalidate>
+      <form ng-submit="submit(user)" ng-controller="registerCtrl" name="registerForm" novalidate >
         <legend>Register</legend>
         <!-- USERNAME -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.username.$invalid && registerForm.username.$dirty, 'has-success': registerForm.username.$valid}">
-          <input type="text" class="form-control" name="username" placeholder="Username" required ng-minlength="6" ng-maxlength="32" ng-model="username">
+          <input ng-model="user.username" type="text" class="form-control" name="username" placeholder="Username" required ng-minlength="6" ng-maxlength="32" ng-model="username">
             <p ng-show="registerForm.username.$error.required && registerForm.username.$dirty" class="help-block">Username is required.</p>
             <p ng-show="registerForm.username.$error.minlength" class="help-block">Username must be more than 6 characters long.</p>
             <p ng-show="registerForm.username.$error.maxlength" class="help-block">Username must be less than 32 characters long.</p>
@@ -99,13 +114,13 @@
         </div>
         <!-- PASSWORD -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.password.$invalid && registerForm.password.$dirty, 'has-success': registerForm.password.$valid}">
-          <input type="password" class="form-control" name="password" placeholder="Password" required ng-model="password">
+          <input ng-model="user.password"type="password" class="form-control" name="password" placeholder="Password" required >
             <p ng-show="registerForm.password.$error.required && !registerForm.password.$pristine" class="help-block">Password is required.</p>
             <i ng-show="registerForm.password.$valid" class="glyphicon glyphicon-ok form-control-feedback"></i>
         </div>
         <!-- FIRST NAME -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.firstname.$invalid && registerForm.firstname.$dirty, 'has-success': registerForm.firstname.$valid}">
-          <input type="text" class="form-control" name="firstname" placeholder="First name" required ng-minlength="6" ng-maxlength="15" ng-model="firstname">
+          <input ng-model="user.firstname" type="text" class="form-control" name="firstname" placeholder="First name" required ng-minlength="6" ng-maxlength="15">
             <p ng-show="registerForm.firstname.$error.required && !registerForm.firstname.$pristine" class="help-block">Firstname is required.</p>
             <p ng-show="registerForm.firstname.$error.minlength" class="help-block">Firstname must be more than 6 characters long.</p>
             <p ng-show="registerForm.firstname.$error.maxlength" class="help-block">Firstname must be less than 15 characters long.</p>
@@ -114,7 +129,7 @@
         </div>
         <!-- LAST NAME -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.lastname.$invalid && registerForm.lastname.$dirty, 'has-success': registerForm.lastname.$valid}">
-          <input type="text" class="form-control" name="lastname" placeholder="Last name" required ng-minlength="6" ng-maxlength="15" ng-model="lastname">
+          <input ng-model="user.lastname"  type="text" class="form-control" name="lastname" placeholder="Last name" required ng-minlength="6" ng-maxlength="15">
             <p ng-show="registerForm.lastname.$error.required && !registerForm.lastname.$pristine" class="help-block">Lastname is required.</p>
             <p ng-show="registerForm.lastname.$error.minlength" class="help-block">Lastname must be more than 6 characters long.</p>
             <p ng-show="registerForm.lastname.$error.maxlength" class="help-block">Lastname must be less than 15 characters long.</p>
@@ -124,22 +139,27 @@
         <!-- GENDER -->
         <div class="form-group has-feedback">
         <label class="radio-inline">
-          <input type="radio" name="gender" value="0" checked>Female
+          <input ng-model="user.gender" type="radio" name="gender" value="0">Female
         </label>
         <label class="radio-inline">
-          <input type="radio" name="gender" value="1">Male
+          <input ng-model="user.gender" type="radio" name="gender" value="1">Male
         </label>
         </div>
         <!-- BIRTH DATE -->
-        <div class="form-group has-feedback" ng-class="{'has-success': registerForm.birthdate.$dirty, 'has-error': registerForm.birthdate.$invalid && registerForm.birthdate.$dirty}">
-          <input type="date" class="form-control" name="birthdate" placeholder="Birth Date" ng-model="birthdate" required min="1950-01-01" max="2015-01-01">
+        <div class="form-group has-feedback" ng-class="{'has-success': registerForm.birthdate.$dirty && registerForm.birthdate.$valid, 'has-error': registerForm.birthdate.$invalid && registerForm.birthdate.$dirty}">
+          <input ng-model="user.birthdate" type="text" class="form-control" name="birthdate" placeholder="Birth Date" required min="1950-01-01" max="2005-12-31" ng-pattern="/^(19|20)[0-9]{2}-((0[1-9])|(1[012]))-((0[1-9])|([1-2][0-9])|(3[0-1]))$/">
           <p ng-show="registerForm.birthdate.$error.required && !registerForm.birthdate.$pristine" class="help-block">Birth Date is required.</p>
+          <p ng-show="registerForm.birthdate.$invalid && registerForm.birthdate.$dirty" class="help-block">Must follow format: yyyy-MM-dd; 
+          Min Date: 1950-01-01; 
+          Max Date: 2005-12-31.</p>
           <i ng-show="registerForm.birthdate.$invalid && registerForm.birthdate.$dirty" class="glyphicon glyphicon-alert form-control-feedback"></i>
           <i ng-show="registerForm.birthdate.$valid" class="glyphicon glyphicon-ok form-control-feedback"></i>
+   		<p>
+   		</p>
         </div>
         <!-- EMAIL -->
         <div class="form-group has-feedback" ng-class="{'has-error': registerForm.email.$invalid && registerForm.email.$dirty, 'has-success': registerForm.email.$valid && registerForm.email.$dirty}">
-          <input type="email" class="form-control" name="email" placeholder="Email" ng-model="email" required>
+          <input ng-model="user.email" type="email" class="form-control" name="email" placeholder="Email" required>
           <p ng-show="registerForm.email.$error.required && !registerForm.email.$pristine" class="help-block">Email is required.</p>
           <p ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="help-block">Please enter a valid email.</p>
           <i ng-show="registerForm.email.$invalid && registerForm.email.$dirty" class="glyphicon glyphicon-alert form-control-feedback"></i>
@@ -148,25 +168,29 @@
         <button type="submit" class="btn btn-primary btn-block" name="registerBtn" ng-disabled="registerForm.$invalid" ng-class="{'btn-success': registerForm.$valid}">Register</button>
       </form>
       <hr>
+      <h1>{{message}}</h1>
     </div>
 	<div class="col-md-3" data-ng-controller="allPostsCtrl">
 					<div class="form-group has-feedback">
 						<input ng-model="searchPost.title" type="text" placeholder="Search posts by title..."
 							class="form-control" name="searchInput"> <i
 							class="glyphicon glyphicon-search form-control-feedback "></i>
-					</div>					
-					<table class="table" ng-show="searchPost.title.length">		
+					</div>		
+					<table class="table" ng-show="searchPost.title.length">	
+					<tbody>
 							<tr data-ng-repeat="lst in listPosts | filter : searchPost as results">
-								<td>									
+								<td>																
 									<h4>
 										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
 									</h4>
 									<p>{{lst.description}}</p>
 								</td>
-							</tr>	
-							<tr ng-if="results.length == 0"><td><h3>No results found...</h3></td></tr>	
+							</tr>
+							<tr ng-if="results.length == 0"><td><h4>No results found...</h4></td></tr>	
+					</tbody>
 					</table>
-					<table class="table" ng-show="!searchPost.title.length">			
+					<table class="table" ng-show="!searchPost.title.length">
+					<tbody>			
 							<tr data-ng-repeat="lst in listPosts | limitTo : 5">
 								<td>									
 									<h4>
@@ -175,8 +199,10 @@
 									<p>{{lst.description}}</p>
 								</td>
 							</tr>	
+						</tbody>
 					</table>
 				</div>
+		
   </div>
 </div>
 </div>
