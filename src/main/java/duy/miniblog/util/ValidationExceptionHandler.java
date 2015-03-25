@@ -37,12 +37,15 @@ public class ValidationExceptionHandler implements ExceptionMapper<ResteasyViola
         List<String> messages = new ArrayList<String>();
         for (ResteasyConstraintViolation violation : exception.getViolations()) {
             // Create log message
-            sb.append(violation.getMessage()).append("; ");
+           
+                sb.append(violation.getMessage()).append("; ");             
+            
             // Create error response message
-            messages.add(violation.getMessage());
+                messages.add(violation.getMessage());
         }
-
+        
         logger.warn("Invalid request: {}", sb.toString());
+        logger.warn("Invalid request message: {}", messages);
 
         return Response.status(400).entity(gson.toJson(messages)).build();
     }

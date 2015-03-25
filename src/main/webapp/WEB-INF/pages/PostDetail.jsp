@@ -26,7 +26,7 @@
 
 
 </head>
-<body data-ng-app="blogApp" ng-controller="welcomeCtrl">
+<body data-ng-app="blogApp" ng-controller="postDetailCtrl">
 
 	<!-- navbar -->
 	<nav class="navbar navbar-inverse ">
@@ -41,7 +41,7 @@
 						class="icon-bar"></span>
 				</button>
 				<h1>
-					<a href="" ng-click="welcome()" style="font-size: 45px; padding: 10px;">Mini Blog</a>
+					<a href="#" style="font-size: 45px; padding: 10px;">Mini Blog</a>
 				</h1>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
@@ -87,29 +87,13 @@
 			</div>
 		</div>
 	</nav>
-	<h2>
-		<a href="" ng-click="welcome()">Home</a> 
-		<a href="" ng-show="showPostDetail">/ {{detailPost.title}}</a> 
-		<a href="" ng-show="showPostsOfAuthor">/ {{AuthorName}}</a> 
-	</h2>
-	{{error}}
-	<a href="home.html">Home</a> |
-	<a href="myProfile.html">My Profile</a> |
-	<a href="myPosts.html">My Posts</a> |
-	<a href="test2.html">test 2</a> |
-	<a href="validateForm.html">Test Form</a> |
-	<a href="atest.html">test test</a> |
-	<a href="customer.html">666666</a> |
-	<a href="getPosts.html">Get All Posts</a> | 
-	<a href="ajax.html">Test Ajax</a> |
-	<a href="" ng-click="postDetail()">Post Detail</a>
-	<hr>
+	<h1>Post Detail {{postId1}} {{test}}</h1>
+	<hr/>
 	<div class="container">
 		<div class="jumbotron">
+
 			<div class="row">
-			
-				<!-- All Posts: Start -->
-				<div id="listAllPost" ng-show="showAllPosts">
+				<!-- All Posts -->
 				<div class="col-md-9" data-ng-controller="allPostsCtrl">
 					<table class="table">						
 							<tr data-ng-repeat="lst in listPosts">
@@ -120,10 +104,10 @@
 											</div>
 											<div class="col-md-10">										
 												<h2>
-													<a href="" ng-click="postDetail(lst.id)">{{lst.title}}</a>
+													<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
 												</h2>
 											<div>
-												<h4 style="float: left; padding: 5px;">Author: <a href="" ng-click="getPostsByAuthor(lst.user_id)">{{lst.firstName + ' ' + lst.lastName}}</a></h4>
+												<h4 style="float: left; padding: 5px;">Author: {{lst.firstName + ' ' + lst.lastName}} </h4>
 												<h4 style="float: right; padding: 5px;">Updated: {{lst.updated_at}}</h4>
 											</div>
 											</div>
@@ -131,103 +115,13 @@
 										<div class="row">
 											<div class="col-md-9">
 											  	{{lst.description}}
-										 	 <a href="" ng-click="postDetail(lst.id)">Read More...</a>
+										 	 <a href="apis/v1/post/{{lst.id}}">Read More...</a>
 									  	</div>
 										</div>	
 								</td>
 							</tr>				
 					</table>
 				</div>
-				</div>
-				<!-- All Posts: End -->
-				
-				<!-- Detail Post: Start -->
-				<div id="postDetail" ng-show="showPostDetail">
-				  	<div class="col-md-9">
-          <table class="table">   
-              
-              <tr >
-                <td>
-                  <div class="row">
-                      <div class="col-md-2">
-                        <img style="width: 100px; height: 100px" src="images/{{detailPost.avatar}}" alt="Avatar">
-                      </div>
-                      <div class="col-md-10">                   
-                        <h2>
-                          <a href="#"> {{detaiPost.title}} </a>
-                        </h2>
-                      <div>
-                        <h4 style="float: left; padding: 5px;">Author: <a href="" ng-click="getPostsByAuthor(detailPost.user_id)">{{detailPost.firstName}} {{detailPost.lastName}}</a></h4>
-                        <h4 style="float: right; padding: 5px;">Updated: {{detailPost.updated_at}}</h4>
-                      </div>
-                      </div>
-                    </div>
-                    <div class="row" style="font-size:20px;">
-                      <div class="col-md-12">
-                          {{detailPost.description}}
-                      </div>
-                    </div>  
-                </td>
-              </tr>       
-          </table>
-    <h2>Comments</h2>
-      <div>
-      <form action="" method="POST" role="form">     
-        <div class="form-group">
-          <textarea name="cmContent" placeholder="Add comment here" style="font-size:20px; width:100%"></textarea>
-        </div>      
-        <button type="submit" class="btn btn-primary">Add Comment</button>
-      </form>
-      </div>
-      <hr/>
-      <h4>{{nocomment}}</h4>
-      <div ng-repeat="comment in comments" class="media">
-        <a class="pull-left" href="#">
-          <img style="width: 100px; height: 100px" class="media-object" src="images/{{comment.avatar}}" alt="Avatar">
-        </a>
-        <div class="media-body">
-          <h3 class="media-heading"><a href="" ng-click="getPostsByAuthor(comment.user_id)">{{comment.firstName}} {{comment.lastName}}</a><span style="float:right">Date: {{comment.updated_at}}</span></h3>
-          <p>{{comment.description}}</p>
-        </div>
-      </div>
-      </div>
-      </div>
-	<!-- Detail Post: End -->
-	
-	
-	<!-- Posts of Author: Start -->
-	<div id="postsOfAuthor" ng-show="showPostsOfAuthor">
-				<div class="col-md-9" data-ng-controller="allPostsCtrl">
-					<h4>{{nopost}}</h4>
-					<table class="table">						
-							<tr data-ng-repeat="lst in postsOfAuthor">
-								<td>
-									<div class="row">
-											<div class="col-md-2">
-												<img style="width: 100px; height: 100px" src="images/{{lst.avatar}}" alt="Avatar">
-											</div>
-											<div class="col-md-10">										
-												<h2>
-													<a href="" ng-click="postDetail(lst.id)">{{lst.title}}</a>
-												</h2>
-											<div>
-												<h4 style="float: left; padding: 5px;">Author: <a href="#">{{lst.firstName + ' ' + lst.lastName}}</a></h4>
-												<h4 style="float: right; padding: 5px;">Updated: {{lst.updated_at}}</h4>
-											</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-9">
-											  	{{lst.description}}
-										 	 <a href="" ng-click="postDetail(lst.id)">Read More...</a>
-									  	</div>
-										</div>	
-								</td>
-							</tr>				
-					</table>
-				</div>
-				</div>
-	<!-- Posts of Author: End -->
 				<br />
 				
 				<!-- Search Posts: Start -->
@@ -241,7 +135,7 @@
 							<tr data-ng-repeat="lst in listPosts | filter : searchPost as results">
 								<td>									
 									<h4>
-										<a href="" ng-click="postDetail(lst.id)">{{lst.title}}</a>
+										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
 									</h4>
 									<p>{{lst.description}}</p>
 								</td>
@@ -252,7 +146,7 @@
 							<tr data-ng-repeat="lst in listPosts | limitTo : 5">
 								<td>									
 									<h4>
-										<a href="" ng-click="postDetail(lst.id)">{{lst.title}}</a>
+										<a href="apis/v1/post/{{lst.id}}">{{lst.title}}</a>
 									</h4>
 									<p>{{lst.description}}</p>
 								</td>

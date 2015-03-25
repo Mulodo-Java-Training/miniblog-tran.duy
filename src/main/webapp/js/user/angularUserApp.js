@@ -1,19 +1,23 @@
 
 
 // create angular app
-var app = angular.module('blogApp', ['ngAnimate','ngRoute']);
+var app = angular.module('blogUserApp', ['ngAnimate','ngRoute']);
 
-app.controller('welcomeCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
 
 	$scope.showAllPosts = true;
 	$scope.showPostDetail = false;
 	$scope.showPostsOfAuthor = false;
+	$scope.showMyPosts = false;
+	$scope.showMyProfile = false;
 	
 	// when click <a href> welcome
 	$scope.welcome = function() {
 		$scope.showAllPosts = true;
 		$scope.showPostDetail = false;
 		$scope.showPostsOfAuthor = false;
+		$scope.showMyPosts = false;
+		$scope.showMyProfile = false;
 	};
 	
 	// when click <a href> post detail with postId
@@ -39,6 +43,8 @@ app.controller('welcomeCtrl', ['$scope', '$http', function ($scope, $http) {
 		$scope.showAllPosts = false;
 		$scope.showPostDetail = true;	
 		$scope.showPostsOfAuthor = false;
+		$scope.showMyPosts = false;
+		$scope.showMyProfile = false;
 	};
 	
 	//when click <a href> author's name
@@ -60,7 +66,25 @@ app.controller('welcomeCtrl', ['$scope', '$http', function ($scope, $http) {
 			});
 		$scope.showAllPosts = false;
 		$scope.showPostDetail = false;	
-		$scope.showPostsOfAuthor = true;		
+		$scope.showPostsOfAuthor = true;	
+		$scope.showMyPosts = false;
+		$scope.showMyProfile = false;
+	};
+	
+	$scope.myProfile = function() {
+		$scope.showAllPosts = false;
+		$scope.showPostDetail = false;	
+		$scope.showPostsOfAuthor = false;	
+		$scope.showMyPosts = false;
+		$scope.showMyProfile = true;
+	};
+	
+	$scope.myPosts = function() {
+		$scope.showAllPosts = false;
+		$scope.showPostDetail = false;	
+		$scope.showPostsOfAuthor = false;	
+		$scope.showMyPosts = true;
+		$scope.showMyProfile = false;
 	};
 	
 }]);

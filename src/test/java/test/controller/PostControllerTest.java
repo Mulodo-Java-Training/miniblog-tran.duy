@@ -60,14 +60,14 @@ public class PostControllerTest
     @Test
     public void testGetAllPostsByUserIdShouldFailBecauseAccessTokenNotExist() throws Exception
     {
-        Response resp = postCtrl.getAllPostsByUserId("123");
+        Response resp = postCtrl.getAllPostsByUserId(123);
         assertEquals(503, resp.getStatus());
     }
     
     @Test
     public void testGetAllPostsByUserIdShouldSuccess() throws Exception
     {
-        Response resp = postCtrl.getAllPostsByUserId("b5da24f91dc449b3fbf44966553d4f053a88fed21d67796e55e2eb135405b44f");
+        Response resp = postCtrl.getAllPostsByUserId(123);
         assertEquals(200, resp.getStatus());
     }
 

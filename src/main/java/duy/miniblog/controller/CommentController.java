@@ -19,6 +19,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.google.gson.Gson;
+
 import duy.miniblog.entity.Comment;
 import duy.miniblog.entity.Post;
 import duy.miniblog.entity.User;
@@ -33,6 +35,8 @@ import duy.miniblog.util.DateUtil;
 @Produces(MediaType.APPLICATION_JSON)
 public class CommentController
 {
+    
+    private static final Gson gson = new Gson();
 
     @Autowired
     private UserService userService;
@@ -133,6 +137,20 @@ public class CommentController
             if (lst == null)
                 return Response.status(200).entity("No Comments").build();
             return Response.status(200).entity(lst).build();
+        } catch (Exception ex) {
+            return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    @GET
+    @Path("post/{postId}/comments")
+    public Response getAllCommentsForAPost(@PathParam("postId") Integer postId)
+    {
+        try{
+        List<Comment> lst = commentService.getCommentByPostId(postId);
+        if (lst == null)
+            return Response.status(200).entity(gson.toJson("No Comments")).build();
+        return Response.status(202).entity(lst.toString()).build();
         } catch (Exception ex) {
             return Response.status(500).entity("Server Error: " + ex.getMessage()).build();
         }

@@ -36,6 +36,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jboss.resteasy.plugins.validation.hibernate.ValidateRequest;
 
+import com.google.gson.Gson;
+
 @Controller
 @Path("/v1")
 @Produces(MediaType.APPLICATION_JSON)
@@ -44,6 +46,8 @@ public class UserController
 {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    
+    private static final Gson gson = new Gson();
 
     @Autowired
     private UserService userService;
@@ -72,13 +76,14 @@ public class UserController
             @NotBlank(message = "{email.NotBlank}") @Email(message = "{email.Email}") @FormParam("email") String em)
             throws Exception
     {
+            String s = "Username exists! Try other name";       
         try {
             if (userService.checkUserName(un)) {
                 logger.info("Username [{}] existed", un);
-                return Response.status(503).entity("Username exists! Try other name").build();
+                return Response.status(503).entity(gson.toJson(s)).build();
             }
             if (userService.checkEmail(em))
-                return Response.status(503).entity("Email has been used! Try new one").build();
+                return Response.status(503).entity(gson.toJson("Email has been used! Try new one")).build();
             User u = new User();
             u.setUserName(un);
             u.setPassWord(EncryptionUtil.encryptString(ps));
@@ -88,10 +93,10 @@ public class UserController
             u.setBirthDate(bd);
             u.setEmail(em);
             userService.createUser(u);
-            return Response.status(201).entity("Dang ki thanh cong!").build();
+            return Response.status(201).entity(gson.toJson("Dang ki thanh cong!")).build();
         } catch (Exception ex) {
             logger.error(ex.getMessage());
-            return Response.status(500).entity("Server Error " + ex.getMessage()).build();
+            return Response.status(500).entity(gson.toJson("Server Error " + ex.getMessage())).build();
         }
     }
 

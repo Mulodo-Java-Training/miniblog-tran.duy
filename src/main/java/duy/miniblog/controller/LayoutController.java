@@ -31,6 +31,12 @@ public class LayoutController
         return "Ajax";
     }
     
+    @RequestMapping(value = "postDetail", method = RequestMethod.GET)
+    public String postDetail()
+    {
+        return "PostDetail";
+    }
+    
     @RequestMapping(value = "getPosts", method = RequestMethod.GET)
     public String getAllPosts(Model model)
     {

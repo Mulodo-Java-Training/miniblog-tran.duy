@@ -20,6 +20,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.google.gson.Gson;
+
 import duy.miniblog.entity.Post;
 import duy.miniblog.entity.User;
 import duy.miniblog.service.CommentService;
@@ -33,6 +35,8 @@ import duy.miniblog.util.DateUtil;
 @Produces(MediaType.APPLICATION_JSON)
 public class PostController
 {
+    private static final Gson gson = new Gson();
+    
     @Autowired
     private UserService userService;
 
@@ -80,23 +84,12 @@ public class PostController
         return Response.status(200).entity(post.toString()).build();
     }
 
-    /*
-     * @GET
-     * @Path("posts") public Response getAllPosts(@HeaderParam("accessToken")
-     * String accessToken) { try { if (!tokenService.checkToken(accessToken))
-     * return Response.status(503).entity("You must login!").build(); List<Post>
-     * post = postService.getAllPosts(); return
-     * Response.status(200).entity(post).build(); } catch (Exception ex) {
-     * return Response.status(500).entity("Server Error: " +
-     * ex.getMessage()).build(); } }
-     */
-
     @GET
     @Path("post/{postId}")
     public Response getPostByPostId(@PathParam("postId") Integer postId)
     {
         Post post = postService.getPostById(postId);
-        return Response.status(200).entity(post).build();
+        return Response.status(200).entity(post.toString()).build();
     }
 
     @GET
@@ -120,8 +113,10 @@ public class PostController
     public Response getAllPostsByUserId(@PathParam("userId") Integer userId)
     {
         List<Post> post = postService.getAllPostsByUserId(userId);
-        return Response.status(200).entity(post).build();
+        if (post == null) return Response.status(200).entity(gson.toJson("No Post")).build();
+        return Response.status(202).entity(post.toString()).build();
     }
+    
     @PUT
     @Path("posts/{postId}")
     @Consumes("application/x-www-form-urlencoded")

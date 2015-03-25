@@ -116,4 +116,15 @@ public class Comment
         this.post = post;
     }
 
+    @Override
+    public String toString()
+    {
+        return "{\"id\":\"" + id + "\", \"title\":\"" + title
+                + "\", \"description\":\"" + description + "\", \"created_at\":\"" + created_at
+                + "\", \"updated_at\":\"" + updated_at + "\", \"deactived\":\"" + deactived
+                + "\", \"firstName\":\"" + user.getFirstName() + "\", \"lastName\":\"" + user.getLastName()
+                + "\", \"avatar\":\"" + user.getAvatar() + "\", \"user_id\":\"" + user.getId() + "\"}";
+
+    }
+    
 }

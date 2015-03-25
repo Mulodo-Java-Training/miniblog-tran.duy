@@ -63,7 +63,11 @@ public class PostDAOImpl implements PostDAO
         List<Post> lst = template
                 .find("from Post where users_id = ? AND updated_at <= NOW() ORDER BY updated_at DESC",
                         id);
-        return lst;
+        if (lst.size() > 0) {
+            return lst;
+        } else {
+            return null;
+        }
     }
 
     @Override
