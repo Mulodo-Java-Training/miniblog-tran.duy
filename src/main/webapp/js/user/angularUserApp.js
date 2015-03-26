@@ -3,8 +3,18 @@
 // create angular app
 var app = angular.module('blogUserApp', ['ngAnimate','ngRoute']);
 
-app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
+app.run([function () {
+	if (localStorage.getItem('accessToken') == null) {		
+		window.location.href = "index.html";
+	}
+}]);
 
+
+app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
+	
+	if (localStorage.getItem('accessToken') == null) $scope.hideBody = true;
+	else $scope.hideBody = false;
+	
 	$scope.showAllPosts = true;
 	$scope.showPostDetail = false;
 	$scope.showPostsOfAuthor = false;
@@ -18,6 +28,28 @@ app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
 		$scope.showPostsOfAuthor = false;
 		$scope.showMyPosts = false;
 		$scope.showMyProfile = false;
+	};
+	
+	$scope.logout = function() {
+		localStorage.clear();
+		window.location.href = "index.html";
+	};
+	
+	$scope.getTest = function() {
+		$http({
+			method : 'GET',
+			url : 'apis/v1/posts/1/comments',
+			headers : {
+				'accessToken' : localStorage.getItem('accessToken')
+			}
+		})
+		.success(function(data) {
+			$scope.list = data;
+		})
+		.error(function(data) {
+			$scope.list = data;
+		})
+		;
 	};
 	
 	// when click <a href> post detail with postId
@@ -69,8 +101,10 @@ app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
 		$scope.showPostsOfAuthor = true;	
 		$scope.showMyPosts = false;
 		$scope.showMyProfile = false;
+		$scope.searchName = "";
 	};
 	
+	//when click myProfile()
 	$scope.myProfile = function() {
 		$scope.showAllPosts = false;
 		$scope.showPostDetail = false;	
@@ -79,6 +113,7 @@ app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
 		$scope.showMyProfile = true;
 	};
 	
+	//when click myPosts()
 	$scope.myPosts = function() {
 		$scope.showAllPosts = false;
 		$scope.showPostDetail = false;	
@@ -86,6 +121,12 @@ app.controller('homeCtrl', ['$scope', '$http', function ($scope, $http) {
 		$scope.showMyPosts = true;
 		$scope.showMyProfile = false;
 	};
+	
+	//return list Name
+	$http.get('apis/v1/users/list')
+	.success(function(response) {
+		$scope.listName = response;
+	});
 	
 }]);
 

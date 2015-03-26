@@ -1,13 +1,8 @@
-var app = angular.module('myapp', ['UserValidation']);
+app.config(function ($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
 
-angular.module('UserValidation', []).directive('validPasswordC', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elm, attrs, ctrl) {
-            ctrl.$parsers.unshift(function (viewValue, $scope) {
-                var noMatch = viewValue != scope.myForm.password.$viewValue
-                ctrl.$setValidity('noMatch', !noMatch)
-            })
-        }
-    }
-})
+    $routeProvider.when("/", { templateUrl: "/pages/Suc1.html" }).
+                   when("/profile", { templateUrl: "/pages/Test.html" }).        
+                   otherwise({ redirectTo: '/' });
+
+});

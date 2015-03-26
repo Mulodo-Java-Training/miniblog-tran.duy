@@ -107,11 +107,13 @@ public class UserController
             throws Exception
     {
         try {
+            if (un == null || ps == null) 
+                return Response.status(403).entity(gson.toJson("Invalid username or password!")).build();
             User user;
             String accessToken = "";
             user = userService.checkLogin(un, EncryptionUtil.encryptString(ps));
             if (user == null)
-                return Response.status(503).entity("You must register!").build();
+                return Response.status(503).entity(gson.toJson("Invalid username or password!")).build();
             accessToken = EncryptionUtil.encryptString(Constant.SECRET_KEY + user.getId()
                     + DateUtil.createAt());
             Token t = new Token();
@@ -120,10 +122,10 @@ public class UserController
             t.setCreate_at(DateUtil.createAt());
             t.setExpired(DateUtil.expired());
             tokenService.createToken(t);
-            return Response.status(201).entity(accessToken).header("accessToken", accessToken)
+            return Response.status(201).entity(gson.toJson(accessToken)).header("accessToken", accessToken)
                     .build();
         } catch (Exception ex) {
-            return Response.status(500).entity("Server Error " + ex.getMessage()).build();
+            return Response.status(500).entity(gson.toJson("Server Error " + ex.getMessage())).build();
         }
     }
 

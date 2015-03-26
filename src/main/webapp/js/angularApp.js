@@ -3,8 +3,34 @@
 // create angular app
 var app = angular.module('blogApp', ['ngAnimate','ngRoute']);
 
+app.run([function () {
+	if (localStorage.getItem('accessToken') != null) {		
+		window.location.href = "home.html";
+	}
+}]);
+
 app.controller('welcomeCtrl', ['$scope', '$http', function ($scope, $http) {
 
+	
+	$scope.login = function(user) {
+		$http({
+			method : 'POST',
+			url : 'apis/v1/login',
+			data : $.param(user), // pass in data as strings
+			// set the headers so angular passing info as form data
+			headers : {
+				'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+			}
+		})
+		.success(function(data) {
+			localStorage.setItem('accessToken', data);
+			window.location.href = "home.html";
+			})
+		.error(function(data) {
+			
+		});
+	};
+	
 	$scope.showAllPosts = true;
 	$scope.showPostDetail = false;
 	$scope.showPostsOfAuthor = false;
@@ -58,6 +84,9 @@ app.controller('welcomeCtrl', ['$scope', '$http', function ($scope, $http) {
 			.error(function(data) {
 				$scope.error = data;
 			});
+		
+	
+		
 		$scope.showAllPosts = false;
 		$scope.showPostDetail = false;	
 		$scope.showPostsOfAuthor = true;		

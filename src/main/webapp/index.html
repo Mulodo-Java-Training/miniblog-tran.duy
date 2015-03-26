@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +5,8 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -17,12 +17,12 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.js"></script>
 <script type="text/javascript" src="js/angularApp.js"></script>
+
 
 
 </head>
@@ -44,29 +44,52 @@
 					<a href="" ng-click="welcome()" style="font-size: 45px; padding: 10px;">Mini Blog</a>
 				</h1>
 			</div>
+			 
 			<div id="navbar" class="navbar-collapse collapse">
-				<form class="navbar-form navbar-right" action="apis/v1/login"
-					method="post" enctype="application/x-www-form-urlencoded">
+				<form class="navbar-form navbar-right" ng-submit="login(user)">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group has-feedback">
+									<input ng-model="user.username" type="text" placeholder="User name" class="form-control"
+										name="username"> <i
+										class="glyphicon glyphicon-user form-control-feedback "></i>
+								</div>
+						</div>
+						<div class="col-md-5">
+							<div class="form-group has-feedback">
+									<input ng-model="user.password" type="password" placeholder="Password"
+										class="form-control" name="password"> <i
+										class="glyphicon glyphicon-lock form-control-feedback"></i>
+							</div>
+							<div style="text-align:center;">
+								<b><a href="#">Forget your password!</a></b>
+							</div>
+						</div>
+						<div class="col-md-2">					
+								<button type="submit" class="btn btn-success">Sign in</button>							
+							<div style="text-align:center:">							
+								<b><a style="padding: 5px;" href="register.html">Register</a></b>
+							</div>
+						</div>
+					</div>
+					<!-- 
 					<table>
-						<tr>
-
+						<tr>						
 							<td style="padding: 5px">
 								<div class="form-group has-feedback">
-
-									<input type="text" placeholder="User name" class="form-control"
+									<input ng-model="user.username" type="text" placeholder="User name" class="form-control"
 										name="username"> <i
 										class="glyphicon glyphicon-user form-control-feedback "></i>
 								</div>
 							</td>
 							<td style="padding: 5px">
 								<div class="form-group has-feedback">
-									<input type="password" placeholder="Password"
+									<input ng-model="user.password" type="password" placeholder="Password"
 										class="form-control" name="password"> <i
 										class="glyphicon glyphicon-lock form-control-feedback"></i>
 								</div>
 							</td>
-							<td style="padding: 5px;">
-								<!-- <h3><a href="Home.html">Sign In</a></h3>  -->
+							<td style="padding: 5px;">								
 								<button type="submit" class="btn btn-success">Sign in</button>
 							</td>
 						</tr>
@@ -83,21 +106,20 @@
 							</label></td>
 						</tr>
 					</table>
+				 -->
 				</form>
 			</div>
 		</div>
 	</nav>
-	<h2>
-		<a href="" ng-click="welcome()">Home</a> 
-		<a href="" ng-show="showPostDetail">/ {{detailPost.title}}</a> 
-		<a href="" ng-show="showPostsOfAuthor">/ {{AuthorName}}</a> 
-	</h2>
+
 	{{error}}
-	<a href="" ng-click="home()">Home angular</a>
+	<a href="/profile">Profile </a> |
+	<a href="/">Home </a> |
+	<a href="" ng-click="home()">Home angular</a> |
 	<a href="home.html">Home</a> |
-	<a href="myProfile.html">My Profile</a> |
-	<a href="myPosts.html">My Posts</a> |
-	<a href="test2.html">test 2</a> |
+	<a href="success.html">Success</a> |
+	<a href="" ng-click="suc1()">Suc 1</a> |
+	<a href="pages/Test.html">TEST</a> |
 	<a href="validateForm.html">Test Form</a> |
 	<a href="atest.html">test test</a> |
 	<a href="customer.html">666666</a> |
@@ -105,7 +127,20 @@
 	<a href="ajax.html">Test Ajax</a> |
 	<a href="" ng-click="postDetail()">Post Detail</a> |
 	<a href="login.html">Check Login</a>
-	<hr>
+	<br/>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4" style="color:red">
+				<h3>
+					<a href="" ng-click="welcome()">Home</a> 
+					<a href="" ng-show="showPostDetail">/ {{detailPost.title}}</a> 
+					<a href="" ng-show="showPostsOfAuthor">/ {{AuthorName}}</a> 
+				</h3>
+			</div>
+			<div class="col-md-4"> <h3 style="color:red;">{{errorLogin}}</h3></div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
 	<div class="container">
 		<div class="jumbotron">
 			<div class="row">

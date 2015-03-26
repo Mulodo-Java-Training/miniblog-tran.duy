@@ -129,7 +129,7 @@ public class UserDAOImpl implements UserDAO
     @Transactional(readOnly = false)
     public List<User> listAllName()
     {
-        List<User> lst = template.find("select firstName, lastName from User ORDER BY firstname");
+        List<User> lst = template.find("select id, firstName, lastName, avatar from User ORDER BY firstname");
         if (lst.size() > 0) {
             return lst;
         } else {
